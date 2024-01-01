@@ -18,10 +18,13 @@ public class GameBoard extends TilePane {
 
     private Tile selectedTile;
 
+    private final DragAndDropHandler dragAndDropHandler ;
+
     public GameBoard(){
 
         this.setWidth(640);
         this.setHeight(640);
+        this.dragAndDropHandler = new DragAndDropHandler(this);
 
         tiles = new Tile[8][8];
         this.selectedTile = new Tile(ColorUtil.BLACK,0,0); // random tile for temp variable
@@ -46,8 +49,9 @@ public class GameBoard extends TilePane {
     private void enable(){
         this.getChildren().forEach(c ->{
              c.setOnMouseClicked(e -> mouseClicked(e,(Tile) c));
-             onDragDetected.andThen(onDragExited).andThen(onDragEntered)
-                     .andThen(onDragOver).andThen(onDragDropped).andThen(onDragDone).accept((Tile) c);
+             dragAndDropHandler.onDragDetected.andThen(dragAndDropHandler.onDragExited).andThen(dragAndDropHandler.onDragEntered)
+                     .andThen(dragAndDropHandler.onDragOver).andThen(dragAndDropHandler.onDragDropped).
+                     andThen(dragAndDropHandler.onDragDone).accept((Tile) c);
         });
     }
 
@@ -55,17 +59,17 @@ public class GameBoard extends TilePane {
         if(t1.hasPiece()){
             if(this.selectedTile != null && this.selectedPiece != null){
                 drawPathOntoBoard(this.selectedPiece.getAllPath
-                        (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos()),false);
+                        (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos(),this),false);
             }
             this.selectedTile = t1;
             this.selectedPiece = t1.getTilePiece();
             drawPathOntoBoard(this.selectedPiece.getAllPath
-                    (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos()),true);
+                    (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos(),this),true);
 
         } else{
             if(this.selectedPiece != null){
                 drawPathOntoBoard(this.selectedPiece.getAllPath
-                        (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos()),false);
+                        (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos(),this),false);
                 this.selectedTile = t1;
                 this.selectedPiece = null;
             }
@@ -75,7 +79,7 @@ public class GameBoard extends TilePane {
 
 
 
-    private void drawPathOntoBoard(List<Location> paths,boolean  x){
+     void drawPathOntoBoard(List<Location> paths,boolean  x){
        if(x){
            this.selectedTile.highlight(false);
            for(Location l : paths){

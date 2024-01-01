@@ -13,7 +13,6 @@ public class ChessGame extends Application {
 
 
         GameLoop gl = new GameLoop();
-//        gl.loop();
 
         Scene scene = new Scene(gl.getGameBoard(), 640, 640);
 

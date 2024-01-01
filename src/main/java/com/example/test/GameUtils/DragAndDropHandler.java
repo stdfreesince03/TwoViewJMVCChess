@@ -11,7 +11,12 @@ import java.util.function.Consumer;
 
 public class DragAndDropHandler {
 
-    static Consumer<Tile> onDragDetected = t -> {
+    private  GameBoard gb;
+
+    public DragAndDropHandler(GameBoard gb){
+        this.gb =  gb;
+    }
+      Consumer<Tile> onDragDetected = t -> {
         EventHandler<MouseEvent> onDragDetected = e -> {
             Dragboard db = t.startDragAndDrop(TransferMode.ANY);
             if (t.getTilePiece() != null) {
@@ -35,13 +40,13 @@ public class DragAndDropHandler {
 
 
 
-    static Consumer<Tile> onDragEntered = t->{
-        System.out.println(1);
+    Consumer<Tile> onDragEntered = t->{
+
         EventHandler<DragEvent> onDragEntered = e->{
             Tile source = (Tile) e.getGestureSource();
             if(source != t ){
                 if(t.hasPiece() & !source.samePieceColor(t) &&
-                        source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos())){
+                        source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)){
                     t.highlight(true);
                 }
             }
@@ -50,8 +55,8 @@ public class DragAndDropHandler {
         t.setOnDragEntered(onDragEntered);
     };
 
-    static Consumer<Tile> onDragExited = t->{
-        System.out.println(2);
+    Consumer<Tile> onDragExited = t->{
+
         EventHandler<DragEvent> onDragExited = e ->{
             t.normalColor();
             e.consume();
@@ -59,13 +64,14 @@ public class DragAndDropHandler {
         t.setOnDragExited(onDragExited);
     };
 
-    static Consumer<Tile> onDragOver = t-> {
-        System.out.println(3);
+     Consumer<Tile> onDragOver = t-> {
+
 
         EventHandler<DragEvent> onDragOver = e ->{
             Tile source = (Tile) e.getGestureSource();
             if(source != t &&
-                    !source.samePieceColor(t)  && source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos())){
+                    !source.samePieceColor(t)  &&
+                    source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)){
                 e.acceptTransferModes(TransferMode.MOVE);
             }
             e.consume();
@@ -73,16 +79,14 @@ public class DragAndDropHandler {
         t.setOnDragOver(onDragOver);
     };
 
-    static Consumer<Tile> onDragDropped = t->{
-
-        System.out.println(4);
+    Consumer<Tile> onDragDropped = t->{
 
         EventHandler<DragEvent> onDragDropped = e->{
             boolean success = false;
             Tile source = (Tile) e.getGestureSource();
 
             if(source != t ){
-                if(!source.samePieceColor(t)  && source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos())){
+                if(!source.samePieceColor(t)  && source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)){
                     t.setPiece((source.getTilePiece()));
                     success = true;
                 }
@@ -95,13 +99,13 @@ public class DragAndDropHandler {
 
     };
 
-    static Consumer<Tile> onDragDone = t ->{
-        System.out.println(5);
+    Consumer<Tile> onDragDone = t ->{
+
         EventHandler<DragEvent> onDragDone = e->{
             if (e.getTransferMode() == TransferMode.MOVE) {
                 System.out.println("YES");
+                gb.drawPathOntoBoard(t.getTilePiece().getAllPath(t.getTileRowPos(),t.getTileColPos(),this.gb), false);
                 t.setPiece(null);
-
             }
             else{
                 t.setPiece(t.getTilePiece());

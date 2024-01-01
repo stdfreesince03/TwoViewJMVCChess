@@ -62,10 +62,11 @@ public class Tile extends Label {
     public void highlight(boolean capture){
         if(!capture){
             this.setStyle("-fx-background-radius: 0;-fx-max-height: 80;" +
-                    "-fx-max-width: 80;-fx-pref-height: 80;-fx-pref-width: 80;-fx-background-color: lightblue");
+                    "-fx-max-width: 80;-fx-pref-height: 80;-fx-pref-width: 80;-fx-background-color: lightblue;-fx-opacity: 0.2;");
         }else{
             this.setStyle("-fx-background-radius: 0;-fx-max-height: 80;" +
-                    "-fx-max-width: 80;-fx-pref-height: 80;-fx-pref-width: 80;-fx-background-color: orange");
+                    "-fx-max-width: 80;-fx-pref-height: 80;-fx-pref-width: 80;-fx-background-color: orange;-fx-opacity: 0.2;");
+
         }
 
     }
@@ -76,7 +77,9 @@ public class Tile extends Label {
 
 
         if(this.piece != null){
+
             this.piece.setLoc(this.rowPos,this.colPos);
+
             ImageView img = new ImageView(p.getPieceType().getImage());
             img.setFitWidth(60);
             img.setFitHeight(60);
@@ -87,6 +90,8 @@ public class Tile extends Label {
             this.setGraphic(img);
             this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }
+
+
 
 
     }

@@ -1,6 +1,7 @@
 package com.example.test.Pieces;
 
 import com.example.test.GameUtils.ColorUtil;
+import com.example.test.GameUtils.GameBoard;
 import com.example.test.GameUtils.Location;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -18,18 +19,12 @@ public abstract class Piece extends Node {
         this.loc = new Location(rowPos,colPos);
     }
 
-    public abstract boolean isValidPath(int row , int col);
-    public abstract List<Location> getAllPath(int row , int col );
+    public abstract boolean isValidPath(int row , int col, GameBoard gb);
+    public abstract List<Location> getAllPath(int row , int col ,GameBoard gb);
 
-    protected boolean isValidCapture(Piece capturedPiece){
-        return (isValidPath(capturedPiece.loc.getRow(),capturedPiece.loc.getCol()) &&
-                capturedPiece.pieceType.getColor() != this.pieceType.getColor());
-    }
     public PieceType getPieceType() {
         return pieceType;
     }
-
-
     protected Image getImage(){
         return this.pieceType.getImage();
     }

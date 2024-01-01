@@ -1,6 +1,7 @@
 package com.example.test.Pieces;
 
 import com.example.test.GameUtils.ColorUtil;
+import com.example.test.GameUtils.GameBoard;
 import com.example.test.GameUtils.Location;
 
 import java.util.ArrayList;
@@ -15,14 +16,14 @@ public class Knight extends Piece{
     }
 
     @Override
-    public boolean isValidPath(int row, int col) {
+    public boolean isValidPath(int row, int col, GameBoard gb) {
         int r0 = super.getPieceRow();
         int c0 = super.getPieceCol();
         return (Math.abs(row-r0) == 1 && Math.abs(col-c0) ==2) || (Math.abs(row-r0) == 2 && Math.abs(col -c0) == 1 );
     }
 
     @Override
-    public List<Location> getAllPath(int row, int col) {
+    public List<Location> getAllPath(int row, int col,GameBoard gb) {
          return new ArrayList<Location>(List.of(new Location(row+1,col+2),
                  new Location(row+1,col-2) ,
                  new Location(row+2,col-1),new Location(row+2,col+1),
