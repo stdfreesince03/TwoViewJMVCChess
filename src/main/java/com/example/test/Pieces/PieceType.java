@@ -21,6 +21,7 @@ public enum PieceType {
 
 
     private String image;
+    private String key;
     PieceType(String image){
         this.image = image;
     }

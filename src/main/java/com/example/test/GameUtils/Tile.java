@@ -1,18 +1,12 @@
 package com.example.test.GameUtils;
 
-import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Rectangle;
 
 import  com.example.test.Pieces.*;
 
-import java.io.File;
-
-public class Tile extends Button {
+public class Tile extends Label {
     private ColorUtil color;
     private int rowPos;
     private int colPos;
@@ -24,16 +18,11 @@ public class Tile extends Button {
         this.color = color;
         this.rowPos =rowPos;
         this.colPos = colPos;
-
-
         normalColor();
 
+
     }
 
-    public Tile(ColorUtil color, int rowPos, int colPos,Piece piece){
-        this(color,rowPos,colPos);
-        setPiece(piece);
-    }
 
     public boolean hasPiece(){
         return this.piece != null;
@@ -53,6 +42,12 @@ public class Tile extends Button {
 
     public Piece getTilePiece() {
         return piece;
+    }
+
+    public boolean samePieceColor(Tile t ){
+        if(t.getTilePiece() == null) return false;
+        return this.piece.getPieceType().getColor() ==
+                t.getTilePiece().getPieceType().getColor();
     }
 
     public void normalColor(){
@@ -75,14 +70,25 @@ public class Tile extends Button {
 
     }
 
-    public void setPiece(Piece piece){
-        ImageView img = new ImageView(piece.getPieceType().getImage());
-        img.setFitWidth(60);
-        img.setFitHeight(60);
+    public void setPiece(Piece p){
 
-        this.piece = piece;
+        this.piece = p;
 
-        this.setGraphic(img);
+
+        if(this.piece != null){
+            this.piece.setLoc(this.rowPos,this.colPos);
+            ImageView img = new ImageView(p.getPieceType().getImage());
+            img.setFitWidth(60);
+            img.setFitHeight(60);
+
+
+
+            this.setText(this.piece.getKey());
+            this.setGraphic(img);
+            this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        }
+
+
     }
 
 }

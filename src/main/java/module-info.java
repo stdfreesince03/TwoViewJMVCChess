@@ -5,5 +5,7 @@ module com.example.test {
     requires org.controlsfx.controls;
 
     opens com.example.test to javafx.fxml;
+
+    exports com.example.trials;
     exports com.example.test;
 }

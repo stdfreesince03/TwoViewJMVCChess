@@ -11,60 +11,50 @@ import java.util.List;
 public abstract class Piece extends Node {
 
     private Location loc;
-
-
-
+    private PieceType pieceType;
     private String key;
-    private final ColorUtil pieceColor;
 
-    protected PieceType pieceType;
-
-
-    public Piece(int rowPos, int colPos,
-            ColorUtil color, int keyNum){
+    public Piece(int rowPos, int colPos){
         this.loc = new Location(rowPos,colPos);
-        this.pieceColor = color;
+    }
+
+    public abstract boolean isValidPath(int row , int col);
+    public abstract List<Location> getAllPath(int row , int col );
+
+    protected boolean isValidCapture(Piece capturedPiece){
+        return (isValidPath(capturedPiece.loc.getRow(),capturedPiece.loc.getCol()) &&
+                capturedPiece.pieceType.getColor() != this.pieceType.getColor());
+    }
+    public PieceType getPieceType() {
+        return pieceType;
     }
 
 
     protected Image getImage(){
         return this.pieceType.getImage();
     }
-    public PieceType getPieceType() {
-        return pieceType;
-    }
-
-    protected int getPieceRowPos() {
+    protected int getPieceRow() {
         return this.loc.getRow();
     }
-
-    protected int getPieceColPos() {
+    protected int getPieceCol() {
         return this.loc.getCol();
     }
 
-    protected Location getLoc() {
-        return loc;
+
+    public void setLoc(int row,int col) {
+        this.loc.setRow(row);
+        this.loc.setCol(col);
     }
 
-    protected String getPieceKey() {
-        return this.key;
+    protected void setPieceType(PieceType pieceType) {
+        this.pieceType = pieceType;
     }
 
-    public void setPieceKey(String key) {
-        this.key = key;
+    public String getKey() {
+        return key;
     }
 
-    protected ColorUtil getPieceColor() {
-        return this.pieceColor;
+    protected void setKey(int keyNum) {
+        this.key = this.pieceType.getKey(keyNum);
     }
-
-    protected abstract boolean isValidPath(int row , int col);
-
-    public abstract List<Location> getAllPath(int row , int col );
-
-
-    protected boolean isValidCapture(Piece capturedPiece){
-        return (isValidPath(capturedPiece.loc.getRow(),capturedPiece.loc.getCol()) && capturedPiece.pieceColor != this.pieceColor);
-    }
-
 }

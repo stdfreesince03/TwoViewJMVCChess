@@ -9,19 +9,15 @@ import java.util.List;
 public class Knight extends Piece{
 
     public Knight(int rowPos, int colPos, ColorUtil color, int keyNum) {
-        super(rowPos, colPos, color, keyNum);
-        if (color.equals(ColorUtil.WHITE)) {
-            super.pieceType = PieceType.KNIGHTW;
-        } else {
-            super.pieceType = PieceType.KNIGHTB;
-        }
-        super.setPieceKey(super.pieceType.getKey(keyNum));
+        super(rowPos, colPos);
+        super.setPieceType(color.equals(ColorUtil.WHITE) ? PieceType.KNIGHTW : PieceType.KNIGHTB );
+        super.setKey(keyNum);
     }
 
     @Override
     public boolean isValidPath(int row, int col) {
-        int r0 = super.getPieceRowPos();
-        int c0 = super.getPieceColPos();
+        int r0 = super.getPieceRow();
+        int c0 = super.getPieceCol();
         return (Math.abs(row-r0) == 1 && Math.abs(col-c0) ==2) || (Math.abs(row-r0) == 2 && Math.abs(col -c0) == 1 );
     }
 

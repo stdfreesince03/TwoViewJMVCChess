@@ -8,6 +8,7 @@ import javafx.scene.control.Control;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
+import static com.example.test.GameUtils.DragAndDropHandler.*;
 
 import java.util.List;
 
@@ -19,56 +20,57 @@ public class GameBoard extends TilePane {
 
     public GameBoard(){
 
-
-
-
         this.setWidth(640);
         this.setHeight(640);
 
         tiles = new Tile[8][8];
+        this.selectedTile = new Tile(ColorUtil.BLACK,0,0); // random tile for temp variable
 
         ColorUtil row = ColorUtil.WHITE;
         ColorUtil col = row;
-
         for (int i = 0; i < this.tiles.length; i++) {
             for (int j = 0; j < this.tiles[i].length; j++) {
                 tiles[i][j] = new Tile(col, i, j);
+                this.getChildren().add(tiles[i][j]);
                 col = (col == ColorUtil.WHITE) ? ColorUtil.BLACK : ColorUtil.WHITE;
             }
             row = (row == ColorUtil.WHITE) ? ColorUtil.BLACK : ColorUtil.WHITE;
             col = row;
         }
 
+        enable();
 
 
-        this.selectedTile = new Tile(ColorUtil.BLACK,0,0); // random tile for temp variable
+    }
 
+    private void enable(){
+        this.getChildren().forEach(c ->{
+             c.setOnMouseClicked(e -> mouseClicked(e,(Tile) c));
+             onDragDetected.andThen(onDragExited).andThen(onDragEntered)
+                     .andThen(onDragOver).andThen(onDragDropped).andThen(onDragDone).accept((Tile) c);
+        });
+    }
 
-
-        for(Tile[] t0 : this.tiles){
-            for(Tile t1 : t0 ){
-                t1.setOnMouseClicked((event) -> {
-                     if(t1.hasPiece()){
-                         if(this.selectedTile != null && this.selectedPiece != null){
-                             drawPathOntoBoard(this.selectedPiece.getAllPath
-                                     (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos()),false);
-                         }
-                         this.selectedTile = t1;
-                         this.selectedPiece = t1.getTilePiece();
-                         drawPathOntoBoard(this.selectedPiece.getAllPath
-                                 (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos()),true);
-
-                     } else{
-                         drawPathOntoBoard(this.selectedPiece.getAllPath
-                                 (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos()),false);
-                         this.selectedTile = t1;
-                         this.selectedPiece = null;
-                     }
-                });
+    private void mouseClicked(MouseEvent event,Tile t1){
+        if(t1.hasPiece()){
+            if(this.selectedTile != null && this.selectedPiece != null){
+                drawPathOntoBoard(this.selectedPiece.getAllPath
+                        (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos()),false);
             }
+            this.selectedTile = t1;
+            this.selectedPiece = t1.getTilePiece();
+            drawPathOntoBoard(this.selectedPiece.getAllPath
+                    (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos()),true);
+
+        } else{
+            if(this.selectedPiece != null){
+                drawPathOntoBoard(this.selectedPiece.getAllPath
+                        (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos()),false);
+                this.selectedTile = t1;
+                this.selectedPiece = null;
+            }
+
         }
-
-
     }
 
 
