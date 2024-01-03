@@ -6,6 +6,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 import java.util.function.Consumer;
 
@@ -47,7 +48,9 @@ public class DragAndDropHandler {
             if(source != t ){
                 if(t.hasPiece() & !source.samePieceColor(t) &&
                         source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)){
-                    t.highlight(true);
+//                    System.out.println("Drag entered");
+                    t.setHighlighted(2);
+                    t.highlight(2);
                 }
             }
             e.consume();
@@ -58,7 +61,10 @@ public class DragAndDropHandler {
     Consumer<Tile> onDragExited = t->{
 
         EventHandler<DragEvent> onDragExited = e ->{
-            t.normalColor();
+            if(t.getHighlighted() == 2 ){
+                t.setHighlighted(1);
+                t.highlight(1);
+            }
             e.consume();
         };
         t.setOnDragExited(onDragExited);
@@ -74,6 +80,7 @@ public class DragAndDropHandler {
                     source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)){
                 e.acceptTransferModes(TransferMode.MOVE);
             }
+
             e.consume();
         };
         t.setOnDragOver(onDragOver);
@@ -86,13 +93,18 @@ public class DragAndDropHandler {
             Tile source = (Tile) e.getGestureSource();
 
             if(source != t ){
+                this.gb.drawPathOntoBoard(source.getTilePiece().getAllPath(source.getTileRowPos(),source.getTileColPos(),gb),false );
                 if(!source.samePieceColor(t)  && source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)){
                     t.setPiece((source.getTilePiece()));
                     success = true;
                 }
+
+
             }
 
+
             e.setDropCompleted(success);
+
             e.consume();
         };
         t.setOnDragDropped(onDragDropped);
@@ -104,13 +116,15 @@ public class DragAndDropHandler {
         EventHandler<DragEvent> onDragDone = e->{
             if (e.getTransferMode() == TransferMode.MOVE) {
                 System.out.println("YES");
-                gb.drawPathOntoBoard(t.getTilePiece().getAllPath(t.getTileRowPos(),t.getTileColPos(),this.gb), false);
+
                 t.setPiece(null);
             }
             else{
                 t.setPiece(t.getTilePiece());
             }
+
         };
+
         t.setOnDragDone(onDragDone);
     };
 

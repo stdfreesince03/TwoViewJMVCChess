@@ -84,7 +84,7 @@ public class Queen extends Piece {
             if(t[startRow][col].hasPiece()){
                 if(!t[startRow][col].getTilePiece().getPieceType().getColor().
                         equals(super.getPieceType().getColor())){
-                    t[startRow][col].highlight(true);
+                    t[startRow][col].highlight(1);
                     ret.add(new Location(startRow,col));
                 }
                 break;
@@ -98,7 +98,7 @@ public class Queen extends Piece {
             if(t[row][startCol].hasPiece()){
                 if(!t[row][startCol].getTilePiece().getPieceType().getColor().
                         equals(super.getPieceType().getColor())){
-                    t[row][startCol].highlight(true);
+                    t[row][startCol].highlight(1);
                     ret.add(new Location(row,startCol));
                 }
                 break;

@@ -81,7 +81,6 @@ public class GameBoard extends TilePane {
 
      void drawPathOntoBoard(List<Location> paths,boolean  x){
        if(x){
-           this.selectedTile.highlight(false);
            for(Location l : paths){
                int row = l.getRow();
                int col = l.getCol();
@@ -95,15 +94,16 @@ public class GameBoard extends TilePane {
                            ){
                        continue;
                    }
-                   tiles[row][col].highlight(true);
-
-               }else{
-                   tiles[row][col].highlight(false);
+                   tiles[row][col].setHighlighted(1);
+                   tiles[row][col].highlight(1);
+               }
+               else{
+                   tiles[row][col].setHighlighted(0);
+                   tiles[row][col].highlight(0);
                }
 
            }
        }else{
-           this.selectedTile.normalColor();
            for(Location l : paths) {
 
 
@@ -114,13 +114,14 @@ public class GameBoard extends TilePane {
                    continue;
                }
 
-               if(tiles[row][col] != null){
+               if(tiles[row][col] != null ){
                    tiles[row][col].normalColor();
                }
            }
        }
 
     }
+
 
     public Tile[][] getTiles() {
         return tiles;

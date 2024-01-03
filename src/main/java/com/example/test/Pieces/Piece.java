@@ -15,6 +15,7 @@ public abstract class Piece extends Node {
     private PieceType pieceType;
     private String key;
 
+
     public Piece(int rowPos, int colPos){
         this.loc = new Location(rowPos,colPos);
     }

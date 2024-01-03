@@ -5,6 +5,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
 import  com.example.test.Pieces.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class Tile extends Label {
     private ColorUtil color;
@@ -12,6 +14,8 @@ public class Tile extends Label {
     private int colPos;
 
     private Piece piece;
+
+    private int highlighted;
 
 
     public Tile(ColorUtil color, int rowPos, int colPos){
@@ -51,6 +55,9 @@ public class Tile extends Label {
     }
 
     public void normalColor(){
+        if(this.getGraphic() instanceof  Circle){
+            this.setGraphic(null);
+        }
         if(color.equals(ColorUtil.WHITE)){
             this.setStyle("-fx-background-radius: 0;-fx-max-height: 80;" +
                     "-fx-max-width: 80;-fx-pref-height: 80;-fx-pref-width: 80;-fx-background-color: white");
@@ -59,14 +66,23 @@ public class Tile extends Label {
                     "-fx-max-width: 80;-fx-pref-height: 80;-fx-pref-width: 80;-fx-background-color: gray");
         }
     }
-    public void highlight(boolean capture){
-        if(!capture){
+    public void highlight(int x ){
+        if(x == 0 ){
+//            this.setStyle("-fx-opacity: 0.1;-fx-background-color: green;-fx-border-radius: 20px;-fx-border-color: lightblue;-fx-border-width: 5px;");
+//            this.setStyle("-fx-background-radius: 0;-fx-max-height: 80;" +
+//                    "-fx-max-width: 80;-fx-pref-height: 80;-fx-pref-width: 80;-fx-background-color: \n" +
+//                    "lightblue;");
+            Circle circle = new Circle(10);
+            circle.setFill(Color.AQUA);
+            this.setGraphic(circle);
+            this.setContentDisplay(ContentDisplay.CENTER);
+        }else if ( x ==1 ){
             this.setStyle("-fx-background-radius: 0;-fx-max-height: 80;" +
-                    "-fx-max-width: 80;-fx-pref-height: 80;-fx-pref-width: 80;-fx-background-color: lightblue;-fx-opacity: 0.2;");
-        }else{
-            this.setStyle("-fx-background-radius: 0;-fx-max-height: 80;" +
-                    "-fx-max-width: 80;-fx-pref-height: 80;-fx-pref-width: 80;-fx-background-color: orange;-fx-opacity: 0.2;");
+                    "-fx-max-width: 80;-fx-pref-height: 80;-fx-pref-width: 80;-fx-background-color: orange;");
 
+        }else if (x ==2 ){
+            this.setStyle("-fx-background-radius: 0;-fx-max-height: 80;" +
+                    "-fx-max-width: 80;-fx-pref-height: 80;-fx-pref-width: 80;-fx-background-color: red;");
         }
 
     }
@@ -91,9 +107,13 @@ public class Tile extends Label {
             this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }
 
-
-
-
     }
 
+    public void setHighlighted(int highlighted) {
+        this.highlighted = highlighted;
+    }
+
+    public int getHighlighted() {
+        return highlighted;
+    }
 }
