@@ -69,7 +69,7 @@ public class Queen extends Piece {
 
              return true;
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -106,6 +106,35 @@ public class Queen extends Piece {
             ret.add(new Location(row,startCol));
             startCol++;
         }
+
+        startRow = row -1;
+        while(startRow >= 0  ){
+            if(t[startRow][col].hasPiece()){
+                if(!t[startRow][col].getTilePiece().getPieceType().getColor().
+                        equals(super.getPieceType().getColor())){
+                    t[startRow][col].highlight(1);
+                    ret.add(new Location(startRow,col));
+                }
+                break;
+            }
+            ret.add(new Location(startRow,col));
+            startRow--;
+        }
+
+        startCol = col - 1;
+        while(startCol >= 0  ){
+            if(t[row][startCol].hasPiece()){
+                if(!t[row][startCol].getTilePiece().getPieceType().getColor().
+                        equals(super.getPieceType().getColor())){
+                    t[row][startCol].highlight(1);
+                    ret.add(new Location(row,startCol));
+                }
+                break;
+            }
+            ret.add(new Location(row,startCol));
+            startCol--;
+        }
+
 
         return ret;
     }

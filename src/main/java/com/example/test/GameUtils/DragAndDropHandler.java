@@ -21,6 +21,10 @@ public class DragAndDropHandler {
         EventHandler<MouseEvent> onDragDetected = e -> {
             Dragboard db = t.startDragAndDrop(TransferMode.ANY);
             if (t.getTilePiece() != null) {
+                this.gb.setSelectedTile(t);
+                this.gb.setSelectedPiece(t.getTilePiece());
+                this.gb.drawPathOntoBoard(t.getTilePiece().getAllPath(t.getTileRowPos(),t.getTileColPos(),gb),true );
+
                 ClipboardContent content = new ClipboardContent();
                 content.putString(t.getText());
                 content.putImage(t.getTilePiece().getPieceType().getImage());

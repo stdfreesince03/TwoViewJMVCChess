@@ -94,11 +94,11 @@ public class GameBoard extends TilePane {
                            ){
                        continue;
                    }
-                   tiles[row][col].setHighlighted(1);
+                   tiles[col][row].setHighlighted(1);
                    tiles[row][col].highlight(1);
                }
                else{
-                   tiles[row][col].setHighlighted(0);
+                   tiles[col][row].setHighlighted(0);
                    tiles[row][col].highlight(0);
                }
 
@@ -125,5 +125,13 @@ public class GameBoard extends TilePane {
 
     public Tile[][] getTiles() {
         return tiles;
+    }
+
+    public void setSelectedTile(Tile selectedTile) {
+        this.selectedTile = selectedTile;
+    }
+
+    public void setSelectedPiece(Piece selectedPiece) {
+        this.selectedPiece = selectedPiece;
     }
 }

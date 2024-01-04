@@ -1,5 +1,6 @@
 package com.example.test.GameUtils;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -68,15 +69,12 @@ public class Tile extends Label {
     }
     public void highlight(int x ){
         if(x == 0 ){
-//            this.setStyle("-fx-opacity: 0.1;-fx-background-color: green;-fx-border-radius: 20px;-fx-border-color: lightblue;-fx-border-width: 5px;");
-//            this.setStyle("-fx-background-radius: 0;-fx-max-height: 80;" +
-//                    "-fx-max-width: 80;-fx-pref-height: 80;-fx-pref-width: 80;-fx-background-color: \n" +
-//                    "lightblue;");
-            Circle circle = new Circle(10);
+            Circle circle = new Circle(5);
             circle.setFill(Color.AQUA);
             this.setGraphic(circle);
-            this.setContentDisplay(ContentDisplay.CENTER);
+            this.setAlignment(Pos.CENTER);
         }else if ( x ==1 ){
+
             this.setStyle("-fx-background-radius: 0;-fx-max-height: 80;" +
                     "-fx-max-width: 80;-fx-pref-height: 80;-fx-pref-width: 80;-fx-background-color: orange;");
 
@@ -104,6 +102,7 @@ public class Tile extends Label {
 
             this.setText(this.piece.getKey());
             this.setGraphic(img);
+            this.setAlignment(Pos.BASELINE_CENTER);
             this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }
 
