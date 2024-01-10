@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ChessGame extends Application {
-    @Override
+
     public void start(Stage stage) throws IOException {
 
 
@@ -16,8 +16,9 @@ public class ChessGame extends Application {
 
         Scene scene = new Scene(gl.getGameBoard(), 640, 640);
 
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.setTitle("Chess Game");
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }

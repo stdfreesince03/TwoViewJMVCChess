@@ -8,6 +8,9 @@ import javafx.scene.input.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 public class DragAndDropHandler {
@@ -53,8 +56,7 @@ public class DragAndDropHandler {
                 if(t.hasPiece() & !source.samePieceColor(t) &&
                         source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)){
 //                    System.out.println("Drag entered");
-                    t.setHighlighted(2);
-                    t.highlight(2);
+                    t.highlight(ColorUtil.RED);
                 }
             }
             e.consume();
@@ -65,9 +67,8 @@ public class DragAndDropHandler {
     Consumer<Tile> onDragExited = t->{
 
         EventHandler<DragEvent> onDragExited = e ->{
-            if(t.getHighlighted() == 2 ){
-                t.setHighlighted(1);
-                t.highlight(1);
+            if(t.getHighlighted().equals(ColorUtil.RED) ){
+                t.highlight(ColorUtil.ORANGE);
             }
             e.consume();
         };
@@ -83,6 +84,7 @@ public class DragAndDropHandler {
                     !source.samePieceColor(t)  &&
                     source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)){
                 e.acceptTransferModes(TransferMode.MOVE);
+
             }
 
             e.consume();
@@ -98,15 +100,13 @@ public class DragAndDropHandler {
 
             if(source != t ){
                 this.gb.drawPathOntoBoard(source.getTilePiece().getAllPath(source.getTileRowPos(),source.getTileColPos(),gb),false );
-                if(!source.samePieceColor(t)  && source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)){
+                if(!source.samePieceColor(t)  &&
+                        source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)){
                     t.setPiece((source.getTilePiece()));
                     success = true;
                 }
 
-
             }
-
-
             e.setDropCompleted(success);
 
             e.consume();
@@ -120,10 +120,9 @@ public class DragAndDropHandler {
         EventHandler<DragEvent> onDragDone = e->{
             if (e.getTransferMode() == TransferMode.MOVE) {
                 System.out.println("YES");
-
                 t.setPiece(null);
             }
-            else{
+            else {
                 t.setPiece(t.getTilePiece());
             }
 
@@ -131,6 +130,48 @@ public class DragAndDropHandler {
 
         t.setOnDragDone(onDragDone);
     };
+
+    public static BiFunction<Piece,GameBoard, List<Location>> diagonal = (p,gb) ->{
+          List<Location> ret = new ArrayList<>();
+          ret.addAll(oneDirection(-1,1,p,gb));
+        ret.addAll(oneDirection(1,-1,p,gb));
+        ret.addAll(oneDirection(1,1,p,gb));
+        ret.addAll(oneDirection(-1,-1,p,gb));
+
+
+          return ret;
+    };
+
+    public static BiFunction<Piece,GameBoard,List<Location>> straight= (p,gb) ->{
+        List<Location> ret = new ArrayList<>();
+        ret.addAll(oneDirection(0,1,p,gb));
+        ret.addAll(oneDirection(0,-1,p,gb));
+        ret.addAll(oneDirection(1,0,p,gb));
+        ret.addAll(oneDirection(-1,0,p,gb));
+
+        return ret;
+    };
+
+    private static List<Location> oneDirection(int rowInc,int colInc,Piece p
+            , GameBoard gb){
+        List<Location> ret = new ArrayList<>();
+        int row = p.getPieceRow();
+        int col = p.getPieceCol();
+        ColorUtil color = p.getPieceType().getColor();
+        Tile[][] tiles = gb.getTiles();
+
+        int i = row + rowInc ;
+        int j = col + colInc;
+        while( i>=0 && j>= 0&& i < 8 && j < 8 && !tiles[i][j].hasPiece()  ){
+            ret.add(new Location(i,j));
+            i+= rowInc;
+            j+= colInc;
+        }
+        if( i>=0 && j>= 0&& i < 8 && j < 8 && !tiles[i][j].samePieceColor(tiles[row][col])){
+            ret.add(new Location(i,j));
+        }
+        return ret;
+    }
 
 
 

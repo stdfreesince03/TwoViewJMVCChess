@@ -8,13 +8,18 @@ import javafx.scene.control.Control;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
+import javafx.stage.Stage;
+
 import static com.example.test.GameUtils.DragAndDropHandler.*;
 
 import java.util.List;
 
-public class GameBoard extends TilePane {
+public class GameBoard extends GridPane {
     private final Tile[][] tiles;
     private Piece selectedPiece;
+
+    public final static int ROW_SIZE= 8;
+    public final static int COL_SIZE= 8;
 
     private Tile selectedTile;
 
@@ -24,17 +29,19 @@ public class GameBoard extends TilePane {
 
         this.setWidth(640);
         this.setHeight(640);
+
+
         this.dragAndDropHandler = new DragAndDropHandler(this);
 
-        tiles = new Tile[8][8];
+        tiles = new Tile[ROW_SIZE][COL_SIZE];
         this.selectedTile = new Tile(ColorUtil.BLACK,0,0); // random tile for temp variable
 
         ColorUtil row = ColorUtil.WHITE;
         ColorUtil col = row;
-        for (int i = 0; i < this.tiles.length; i++) {
-            for (int j = 0; j < this.tiles[i].length; j++) {
+        for (int i = 0; i < ROW_SIZE; i++) {
+            for (int j = 0; j < COL_SIZE; j++) {
                 tiles[i][j] = new Tile(col, i, j);
-                this.getChildren().add(tiles[i][j]);
+                this.add(tiles[i][j],j,i);
                 col = (col == ColorUtil.WHITE) ? ColorUtil.BLACK : ColorUtil.WHITE;
             }
             row = (row == ColorUtil.WHITE) ? ColorUtil.BLACK : ColorUtil.WHITE;
@@ -94,12 +101,10 @@ public class GameBoard extends TilePane {
                            ){
                        continue;
                    }
-                   tiles[col][row].setHighlighted(1);
-                   tiles[row][col].highlight(1);
+                   tiles[row][col].highlight(ColorUtil.ORANGE);
                }
                else{
-                   tiles[col][row].setHighlighted(0);
-                   tiles[row][col].highlight(0);
+                   tiles[row][col].highlight(ColorUtil.CIRCLE);
                }
 
            }
@@ -115,7 +120,7 @@ public class GameBoard extends TilePane {
                }
 
                if(tiles[row][col] != null ){
-                   tiles[row][col].normalColor();
+                   tiles[row][col].highlight(ColorUtil.NORMAL);
                }
            }
        }

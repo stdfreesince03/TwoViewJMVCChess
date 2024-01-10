@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
 public enum ColorUtil {
-    WHITE,BLACK;
+    WHITE,BLACK,RED,ORANGE,NORMAL,CIRCLE;
 
    public static void fillColor(Shape shape, ColorUtil color){
        if(color.equals(WHITE)){

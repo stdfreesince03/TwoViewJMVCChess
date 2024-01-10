@@ -23,4 +23,12 @@ public class Location {
     public void setCol(int col) {
         this.col = col;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || !(obj instanceof  Location)){
+            return false;
+        }
+        return this.row == ((Location)obj).getRow() && this.col == ((Location)obj).getCol();
+    }
 }

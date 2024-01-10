@@ -29,10 +29,10 @@ public abstract class Piece extends Node {
     protected Image getImage(){
         return this.pieceType.getImage();
     }
-    protected int getPieceRow() {
+    public int getPieceRow() {
         return this.loc.getRow();
     }
-    protected int getPieceCol() {
+    public int getPieceCol() {
         return this.loc.getCol();
     }
 
