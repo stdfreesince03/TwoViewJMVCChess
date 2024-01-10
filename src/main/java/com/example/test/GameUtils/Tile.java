@@ -33,9 +33,6 @@ public class Tile extends Label {
         return this.piece != null;
     }
 
-    public ColorUtil getTileColor() {
-        return color;
-    }
 
     public int getTileRowPos() {
         return rowPos;

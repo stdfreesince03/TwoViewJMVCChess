@@ -1,5 +1,6 @@
 package com.example.test.GameUtils;
 
+import com.example.test.Pieces.Pawn;
 import com.example.test.Pieces.Piece;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContentDisplay;
@@ -101,7 +102,7 @@ public class DragAndDropHandler {
             if(source != t ){
                 this.gb.drawPathOntoBoard(source.getTilePiece().getAllPath(source.getTileRowPos(),source.getTileColPos(),gb),false );
                 if(!source.samePieceColor(t)  &&
-                        source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)){
+                        source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)) {
                     t.setPiece((source.getTilePiece()));
                     success = true;
                 }
@@ -133,28 +134,68 @@ public class DragAndDropHandler {
 
     public static BiFunction<Piece,GameBoard, List<Location>> diagonal = (p,gb) ->{
           List<Location> ret = new ArrayList<>();
-          ret.addAll(oneDirection(-1,1,p,gb));
-        ret.addAll(oneDirection(1,-1,p,gb));
-        ret.addAll(oneDirection(1,1,p,gb));
-        ret.addAll(oneDirection(-1,-1,p,gb));
-
-
+        oneDirectionMultiple(ret,-1,1,p,gb);
+        oneDirectionMultiple(ret,1,-1,p,gb);
+        oneDirectionMultiple(ret,1,1,p,gb);
+        oneDirectionMultiple(ret,-1,-1,p,gb);
           return ret;
     };
 
     public static BiFunction<Piece,GameBoard,List<Location>> straight= (p,gb) ->{
         List<Location> ret = new ArrayList<>();
-        ret.addAll(oneDirection(0,1,p,gb));
-        ret.addAll(oneDirection(0,-1,p,gb));
-        ret.addAll(oneDirection(1,0,p,gb));
-        ret.addAll(oneDirection(-1,0,p,gb));
+        oneDirectionMultiple(ret,0,1,p,gb);
+        oneDirectionMultiple(ret,0,-1,p,gb);
+        oneDirectionMultiple(ret,1,0,p,gb);
+        oneDirectionMultiple(ret,-1,0,p,gb);
 
         return ret;
     };
 
-    private static List<Location> oneDirection(int rowInc,int colInc,Piece p
+    public static void kingSpecial (List<Location> ret,int rowInc,int colInc,Piece p
             , GameBoard gb){
-        List<Location> ret = new ArrayList<>();
+
+        Tile[][] tiles = gb.getTiles();
+        int row = p.getPieceRow();
+        int col = p.getPieceCol();
+        int i = row + rowInc ;
+        int j = col + colInc;
+
+
+
+        if(i>=0 && j>= 0&& i < 8 && j < 8  && (!tiles[i][j].hasPiece() ||
+                    !tiles[i][j].samePieceColor(tiles[row][col]) )){
+            ret.add(new Location(i,j));
+        }
+
+    }
+
+    public static void pawnSpecial (List<Location> ret,Pawn p,GameBoard gb ){
+        Tile[][] tiles = gb.getTiles();
+        int row = p.getPieceRow();
+        int col = p.getPieceCol();
+
+        if(row-1 >= 0 && col+1 < 8 && tiles[row-1][col+1].hasPiece() &&
+                !tiles[row-1][col+1].samePieceColor(tiles[row][col]) ){
+            ret.add(new Location(row-1,col+1));
+        }
+        if(row-1 >= 0 && col-1 >= 0 && tiles[row-1][col-1].hasPiece() &&
+                !tiles[row-1][col-1].samePieceColor(tiles[row][col]) ){
+            ret.add(new Location(row-1,col-1));
+        }
+        if(row-1 >= 0 && !tiles[row-1][col].hasPiece() ){
+            ret.add(new Location(row-1,col));
+        }
+        if(!p.isTwoStep()){
+            if((row-2>=0 ) &&
+                    (!gb.getTiles()[row-2][col].hasPiece() )){
+                    ret.add(new Location(row-2,col));
+            }
+        }
+    }
+
+
+    private static void  oneDirectionMultiple(List<Location> ret, int rowInc,int colInc,Piece p
+            , GameBoard gb){
         int row = p.getPieceRow();
         int col = p.getPieceCol();
         ColorUtil color = p.getPieceType().getColor();
@@ -170,7 +211,6 @@ public class DragAndDropHandler {
         if( i>=0 && j>= 0&& i < 8 && j < 8 && !tiles[i][j].samePieceColor(tiles[row][col])){
             ret.add(new Location(i,j));
         }
-        return ret;
     }
 
 

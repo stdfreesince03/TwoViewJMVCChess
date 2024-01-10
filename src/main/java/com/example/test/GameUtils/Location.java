@@ -26,7 +26,7 @@ public class Location {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == null || !(obj instanceof  Location)){
+        if(!(obj instanceof  Location)){
             return false;
         }
         return this.row == ((Location)obj).getRow() && this.col == ((Location)obj).getCol();

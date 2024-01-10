@@ -17,11 +17,10 @@ public enum PieceType {
     QUEENW("src/main/java/com/example/test/Images/Queen-White.png"),
     ROOKW("src/main/java/com/example/test/Images/Rook-White.png"),
     BISHOPW("src/main/java/com/example/test/Images/Bishop-White.png"),
-    PAWNW("src/main/java/com/example/test/Images/Pawn-White.png");
+    PAWNW("src/main/java/com/example/test/Images/Pawn White.png");
 
 
     private String image;
-    private String key;
     PieceType(String image){
         this.image = image;
     }
