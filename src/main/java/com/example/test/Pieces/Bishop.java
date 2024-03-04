@@ -1,9 +1,6 @@
 package com.example.test.Pieces;
 
-import com.example.test.GameUtils.ColorUtil;
-import com.example.test.GameUtils.DragAndDropHandler;
-import com.example.test.GameUtils.GameBoard;
-import com.example.test.GameUtils.Location;
+import com.example.test.GameUtils.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +19,6 @@ public class Bishop extends  Piece {
 
     @Override
     public List<Location> getAllPath(int row, int col, GameBoard gb) {
-        return new ArrayList<>(DragAndDropHandler.diagonal.apply(this, gb));
+        return new ArrayList<>(MoveHandler.diagonal.apply(this, gb));
     }
 }

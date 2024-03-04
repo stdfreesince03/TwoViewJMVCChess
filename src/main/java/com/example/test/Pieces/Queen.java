@@ -21,8 +21,10 @@ public class Queen extends Piece {
     @Override
     public List<Location> getAllPath(int row, int col,GameBoard gb) {
         List<Location> ret = new ArrayList<>();
-        ret.addAll(DragAndDropHandler.straight.apply(this,gb));
-        ret.addAll(DragAndDropHandler.diagonal.apply(this,gb));
+        ret.addAll(MoveHandler.straight.apply(this,gb));
+        ret.addAll(MoveHandler.diagonal.apply(this,gb));
         return ret;
     }
+
+
 }

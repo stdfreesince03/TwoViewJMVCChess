@@ -14,6 +14,7 @@ public abstract class Piece extends Node {
     private Location loc;
     private PieceType pieceType;
     private String key;
+    private int keyNum;
 
 
     public Piece(int rowPos, int colPos){
@@ -47,10 +48,15 @@ public abstract class Piece extends Node {
     }
 
     public String getKey() {
-        return key;
+        return this.pieceType.getKey(keyNum);
     }
 
     protected void setKey(int keyNum) {
+        this.keyNum = keyNum;
         this.key = this.pieceType.getKey(keyNum);
+    }
+
+    protected int getKeyNum() {
+        return keyNum;
     }
 }

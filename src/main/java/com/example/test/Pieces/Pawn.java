@@ -27,21 +27,16 @@ public class Pawn extends Piece{
     @Override
     public List<Location> getAllPath(int row, int col, GameBoard gb) {
         List<Location> ret = new ArrayList<>();
-        DragAndDropHandler.pawnSpecial(ret,this,gb);
-//        DragAndDropHandler.oneDirectionSingle(ret,-1,0,this,gb,true);
-//        DragAndDropHandler.oneDirectionSingle(ret,-1,1,this,gb,false);
-//        DragAndDropHandler.oneDirectionSingle(ret,-1,-1,this,gb,false);
-//        if(!twoStep){
-//            if((row-2 >=0 ) &&
-//                    (!gb.getTiles()[row-2][col].hasPiece() )){
-//                    ret.add(new Location(row-2,col));
-//            }
-//        }
+        MoveHandler.pawnSpecial(ret,this,gb);
         return ret;
 
     }
 
     public boolean isTwoStep() {
         return twoStep;
+    }
+
+    public void setTwoStep(boolean twoStep) {
+        this.twoStep = twoStep;
     }
 }

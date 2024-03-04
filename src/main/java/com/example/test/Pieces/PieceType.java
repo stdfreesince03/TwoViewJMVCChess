@@ -41,6 +41,8 @@ public enum PieceType {
             case KINGW -> "KiW";
             case PAWNB -> "PB";
             case PAWNW -> "PW";
+            case QUEENB -> "QB";
+            case QUEENW -> "QW";
             default -> "";
         } + keyNum ;
     }

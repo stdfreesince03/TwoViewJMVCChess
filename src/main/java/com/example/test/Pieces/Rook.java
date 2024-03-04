@@ -19,6 +19,6 @@ public class Rook extends Piece {
 
     @Override
     public List<Location> getAllPath(int row, int col,GameBoard gb) {
-        return new ArrayList<>(DragAndDropHandler.straight.apply(this, gb));
+        return new ArrayList<>(MoveHandler.straight.apply(this, gb));
     }
 }

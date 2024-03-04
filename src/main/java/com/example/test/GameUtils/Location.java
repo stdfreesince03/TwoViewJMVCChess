@@ -31,4 +31,12 @@ public class Location {
         }
         return this.row == ((Location)obj).getRow() && this.col == ((Location)obj).getCol();
     }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "row=" + row +
+                ", col=" + col +
+                '}';
+    }
 }

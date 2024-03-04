@@ -19,7 +19,7 @@ public class GameLoop {
         gameBoard.getTiles()[0][7].setPiece(new Rook(0,7,ColorUtil.BLACK,1));
         gameBoard.getTiles()[0][6].setPiece(new Bishop(0,6,ColorUtil.WHITE,1));
         gameBoard.getTiles()[0][1].setPiece(new King(0,1,ColorUtil.WHITE,1));
-        gameBoard.getTiles()[6][7].setPiece(new Pawn(6,7,ColorUtil.WHITE,1));
+        gameBoard.getTiles()[6][6].setPiece(new Pawn(6,6,ColorUtil.WHITE,1));
 
     }
 
