@@ -70,7 +70,7 @@ public class MoveHandler {
     }
 
 
-    private static void  oneDirectionMultiple(List<Location> ret, int rowInc,int colInc,Piece p
+    private static void oneDirectionMultiple(List<Location> ret, int rowInc,int colInc,Piece p
             , GameBoard gb){
         int row = p.getPieceRow();
         int col = p.getPieceCol();
@@ -91,6 +91,17 @@ public class MoveHandler {
 
 
 
+//    ------------------------------------------------------------------------------------
+
+    public static List<Location> diagonal(int row, int col ,Piece p,GameBoard gb){
+        List<Location> ret = new ArrayList<>();
+        oneDirectionMultipleNew(ret,row,col,-1,1,p,gb);
+        oneDirectionMultipleNew(ret,row,col,1,-1,p,gb);
+        oneDirectionMultipleNew(ret,row,col,1,1,p,gb);
+        oneDirectionMultipleNew(ret,row,col,-1,-1,p,gb);
+        return ret;
+    }
+
     public static List<Location> straight(int row, int col ,Piece p,GameBoard gb){
         List<Location> ret = new ArrayList<>();
         oneDirectionMultipleNew(ret,row,col,0,1,p,gb);
@@ -100,9 +111,9 @@ public class MoveHandler {
         return ret;
     }
 
-    private static void  oneDirectionMultipleNew(List<Location> ret,int row, int col, int rowInc,int colInc,Piece p
-            , GameBoard gb){
-
+    private static void  oneDirectionMultipleNew(List<Location> ret,
+                                                 int row, int col, int rowInc,int colInc,
+                                                 Piece p,GameBoard gb){
         ColorUtil color = p.getPieceType().getColor();
         Tile[][] tiles = gb.getTiles();
 

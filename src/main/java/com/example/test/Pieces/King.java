@@ -40,38 +40,29 @@ public class King extends Piece{
     public boolean isChecked(int row ,int col ,GameBoard gb){
 
         String checkerColor = this.getPieceType().getColor() == ColorUtil.BLACK ?  "W" : "B" ;
-//        boolean straight = MoveHandler.straight.apply(this,gb)
-//                .stream()
-//                .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())
-//                .filter(Objects::nonNull)
-//                .anyMatch(piece -> piece.getKey().equals("Q"+checkerColor + piece.getKeyNum()) ||
-//                        piece.getKey().equals("R"+ checkerColor + piece.getKeyNum()) );
 
         boolean straight = MoveHandler.straight(row,col,this,gb).stream()
                 .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())
                 .filter(Objects::nonNull)
                  .anyMatch(piece -> piece.getKey().equals("Q"+checkerColor + piece.getKeyNum()) ||
                         piece.getKey().equals("R"+ checkerColor + piece.getKeyNum()) );
+        boolean diagonal = MoveHandler.diagonal(row,col,this,gb)
+                .stream()
+                .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())
+                .filter(Objects::nonNull)
+                .anyMatch(piece -> piece.getKey().equals("B"+checkerColor + piece.getKeyNum()) ||
+                        piece.getKey().equals("Q"+checkerColor + piece.getKeyNum()) );
+        boolean lHorse = Stream.of(new Location(row+1,col+2),
+                new Location(row+1,col-2) ,
+                new Location(row+2,col-1),new Location(row+2,col+1),
+                new Location(row-2,col-1),new Location(row-2,col+1),
+                new Location(row-1,col-2),new Location(row-1,col+2)).filter(l ->
+                (l.getRow() >= 0 && l.getRow() < 8) && (l.getCol() >= 0 && l.getCol() < 8) )
+                .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())
+                .filter(Objects::nonNull)
+                .anyMatch(piece -> piece.getKey().equals("K"+checkerColor + piece.getKeyNum()));
 
-//        boolean diagonal = MoveHandler.diagonal.apply(this,gb)
-//                .stream()
-//                .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())
-//                .filter(Objects::nonNull)
-//                .anyMatch(piece -> piece.getKey().equals("B"+checkerColor) ||
-//                        piece.getKey().equals("Q"+checkerColor) );
-//
-//        boolean lHorse = Stream.of(new Location(row+1,col+2),
-//                new Location(row+1,col-2) ,
-//                new Location(row+2,col-1),new Location(row+2,col+1),
-//                new Location(row-2,col-1),new Location(row-2,col+1),
-//                new Location(row-1,col-2),new Location(row-1,col+2)).filter(l ->
-//                (l.getRow() >= 0 && l.getRow() < 8) && (l.getCol() >= 0 && l.getCol() < 8) )
-//                .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())
-//                .filter(Objects::nonNull)
-//                .anyMatch(piece -> piece.getKey().equals("H"+checkerColor));
-
-//        return lHorse || diagonal || straight;
-        return straight;
+        return straight || lHorse || diagonal;
 
     }
 
