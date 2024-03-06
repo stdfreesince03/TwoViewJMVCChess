@@ -20,11 +20,6 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public boolean isValidPath(int row, int col, GameBoard gb) {
-        return getAllPath(row,col,gb).contains(new Location(row,col));
-    }
-
-    @Override
     public List<Location> getAllPath(int row, int col, GameBoard gb) {
         List<Location> ret = new ArrayList<>();
         MoveHandler.pawnSpecial(ret,this,gb);
@@ -32,7 +27,7 @@ public class Pawn extends Piece{
 
     }
 
-    public boolean isTwoStep() {
+    public boolean hasTwoStepped() {
         return twoStep;
     }
 

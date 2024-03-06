@@ -13,12 +13,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public boolean isValidPath(int row, int col, GameBoard gb) {
-        return (getAllPath(row,col,gb).contains(new Location(row,col)));
-    }
-
-    @Override
     public List<Location> getAllPath(int row, int col,GameBoard gb) {
-        return new ArrayList<>(MoveHandler.straight.apply(this, gb));
+        return new ArrayList<>(MoveHandler.straight(row,col,this, gb));
     }
 }

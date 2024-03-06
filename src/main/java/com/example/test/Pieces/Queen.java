@@ -13,16 +13,13 @@ public class Queen extends Piece {
         super.setKey(keyNum);
     }
 
-    @Override
-    public boolean isValidPath(int row, int col, GameBoard gb) {
-      return (getAllPath(row,col,gb).contains(new Location(row,col)));
-    }
+
 
     @Override
     public List<Location> getAllPath(int row, int col,GameBoard gb) {
         List<Location> ret = new ArrayList<>();
-        ret.addAll(MoveHandler.straight.apply(this,gb));
-        ret.addAll(MoveHandler.diagonal.apply(this,gb));
+        ret.addAll(MoveHandler.straight(row,col,this,gb));
+        ret.addAll(MoveHandler.diagonal(row,col,this,gb));
         return ret;
     }
 

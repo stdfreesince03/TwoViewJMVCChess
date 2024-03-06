@@ -12,7 +12,7 @@ public class ChessGame extends Application {
     public void start(Stage stage) throws IOException {
 
 
-        GameLoop gl = new GameLoop();
+        GameLoop gl = new GameLoop(stage);
 
         Scene scene = new Scene(gl.getGameBoard(), 640, 640);
 

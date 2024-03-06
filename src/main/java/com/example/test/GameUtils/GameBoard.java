@@ -132,6 +132,10 @@ public class GameBoard extends GridPane {
         return tiles;
     }
 
+    public Piece getSelectedPiece(){
+        return this.selectedPiece;
+    }
+
     public void setSelectedTile(Tile selectedTile) {
         this.selectedTile = selectedTile;
     }
@@ -139,4 +143,5 @@ public class GameBoard extends GridPane {
     public void setSelectedPiece(Piece selectedPiece) {
         this.selectedPiece = selectedPiece;
     }
+
 }

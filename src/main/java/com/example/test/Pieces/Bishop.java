@@ -13,12 +13,7 @@ public class Bishop extends  Piece {
     }
 
     @Override
-    public boolean isValidPath(int row, int col, GameBoard gb) {
-        return (getAllPath(row,col,gb).contains(new Location(row,col)));
-    }
-
-    @Override
     public List<Location> getAllPath(int row, int col, GameBoard gb) {
-        return new ArrayList<>(MoveHandler.diagonal.apply(this, gb));
+        return new ArrayList<>(MoveHandler.diagonal(row,col,this, gb));
     }
 }

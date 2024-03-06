@@ -21,7 +21,9 @@ public abstract class Piece extends Node {
         this.loc = new Location(rowPos,colPos);
     }
 
-    public abstract boolean isValidPath(int row , int col, GameBoard gb);
+  public  boolean isValidPath(int row , int col, GameBoard gb){
+       return (getAllPath(this.getPieceRow(),this.getPieceCol(),gb).contains(new Location(row,col)));
+    }
     public abstract List<Location> getAllPath(int row , int col ,GameBoard gb);
 
     public PieceType getPieceType() {

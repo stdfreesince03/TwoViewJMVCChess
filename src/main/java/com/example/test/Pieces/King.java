@@ -14,10 +14,6 @@ public class King extends Piece{
         super.setKey(keyNum);
     }
 
-    @Override
-    public boolean isValidPath(int row, int col, GameBoard gb) {
-        return getAllPath(row,col,gb).contains(new Location(row,col));
-    }
 
     @Override
     public List<Location> getAllPath(int row, int col, GameBoard gb) {
@@ -30,11 +26,14 @@ public class King extends Piece{
         MoveHandler.kingSpecial(ret,1,1,this,gb);
         MoveHandler.kingSpecial(ret,0,1,this,gb);
         MoveHandler.kingSpecial(ret,-1,1,this,gb);
+
         ret = ret.stream()
-                .filter(l-> (!isChecked(l.getRow(),l.getCol(),gb)) ).toList();
+                .filter(l-> (!isChecked(l.getRow(),l.getCol(),gb)) )
+                .toList();
         return ret;
 
     }
+
 
 
     public boolean isChecked(int row ,int col ,GameBoard gb){
@@ -62,7 +61,33 @@ public class King extends Piece{
                 .filter(Objects::nonNull)
                 .anyMatch(piece -> piece.getKey().equals("K"+checkerColor + piece.getKeyNum()));
 
-        return straight || lHorse || diagonal;
+        Stream<Location>  pawnStream;
+        if(this.getPieceType().getColor() == ColorUtil.BLACK){
+            pawnStream =Stream.of(new Location(row+1,col+1),
+                    new Location(row+1,col-1));
+        }else{
+            pawnStream =Stream.of(new Location(row-1,col+1),
+                    new Location(row-1,col-1));
+        }
+        boolean pawnCheck = pawnStream
+                .filter(l -> (l.getRow() >= 0 && l.getRow() < 8) && (l.getCol() >= 0 && l.getCol() < 8))
+                .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())
+                .filter(Objects::nonNull)
+                .anyMatch(piece -> piece.getKey().equals("P" + checkerColor + piece.getKeyNum()));
+//
+      boolean kingCheck =Stream.of(new Location(row,col+1),
+                new Location(row,col-1),new Location(row-1,col),
+              new Location(row+1,col),new Location(row-1,col-1),
+              new Location(row-1,col+1),new Location(row+1,col-1),
+              new Location(row+1,col+1))
+              .filter(l ->
+                      (l.getRow() >= 0 && l.getRow() < 8) && (l.getCol() >= 0 && l.getCol() < 8) )
+              .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())
+              .filter(Objects::nonNull)
+              .anyMatch(piece -> piece.getKey().equals("Ki" + checkerColor + piece.getKeyNum()));
+
+
+        return straight || lHorse || diagonal || pawnCheck || kingCheck;
 
     }
 
