@@ -25,8 +25,10 @@ public class DragAndDropHandler {
         EventHandler<MouseEvent> onDragDetected = e -> {
             Dragboard db = t.startDragAndDrop(TransferMode.ANY);
             if (t.getTilePiece() != null) {
-                this.gb.drawPathOntoBoard(this.gb.getSelectedPiece().getAllPath
-                        (this.gb.getSelectedPiece().getPieceRow(),this.gb.getSelectedPiece().getPieceRow(),gb),false );
+                if(this.gb.getSelectedPiece() != null){
+                    this.gb.drawPathOntoBoard(this.gb.getSelectedPiece().getAllPath
+                            (this.gb.getSelectedPiece().getPieceRow(),this.gb.getSelectedPiece().getPieceCol(),gb),false );
+                }
                 this.gb.setSelectedTile(t);
                 this.gb.setSelectedPiece(t.getTilePiece());
                 this.gb.drawPathOntoBoard(t.getTilePiece().getAllPath(t.getTileRowPos(),t.getTileColPos(),gb),true );

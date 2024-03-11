@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 import java.io.File;
 
 public class MainTrial extends Application {
-    @Override
+
     public void start(Stage stage) {
         stage.setTitle("Hello Drag And Drop");
 
