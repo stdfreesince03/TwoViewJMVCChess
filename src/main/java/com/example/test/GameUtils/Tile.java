@@ -95,6 +95,7 @@ public class Tile extends Label {
 
             this.piece.setLoc(this.rowPos,this.colPos);
 
+
             ImageView img = new ImageView(p.getPieceType().getImage());
             img.setFitWidth(60);
             img.setFitHeight(60);
@@ -107,6 +108,8 @@ public class Tile extends Label {
         }
 
     }
+
+
 
 
     public ColorUtil getHighlighted() {
