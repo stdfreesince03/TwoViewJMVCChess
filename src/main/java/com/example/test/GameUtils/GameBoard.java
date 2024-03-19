@@ -1,6 +1,6 @@
 package com.example.test.GameUtils;
 
-import com.example.test.Pieces.Piece;
+import com.example.test.Pieces.*;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -12,7 +12,9 @@ import javafx.stage.Stage;
 
 import static com.example.test.GameUtils.DragAndDropHandler.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameBoard extends GridPane {
     private final Tile[][] tiles;
@@ -24,6 +26,9 @@ public class GameBoard extends GridPane {
     private Tile selectedTile;
 
     private final DragAndDropHandler dragAndDropHandler ;
+
+    private Map<String, Piece> whitePieces = new HashMap<>();
+    private Map<String, Piece> blackPieces = new HashMap<>();
 
     public GameBoard(){
 
@@ -49,8 +54,51 @@ public class GameBoard extends GridPane {
         }
 
         enable();
+        initializePieces();
+        placePieces();
 
 
+    }
+
+    private void initializePieces() {;
+
+        blackPieces.put("K", new King(0, 4, ColorUtil.BLACK, 1));
+        blackPieces.put("Q", new Queen(0, 3, ColorUtil.BLACK, 1));
+        blackPieces.put("B1", new Bishop(0, 2, ColorUtil.BLACK, 1));
+        blackPieces.put("B2", new Bishop(0, 5, ColorUtil.BLACK, 2));
+        blackPieces.put("Kn1", new Knight(0, 1, ColorUtil.BLACK, 1));
+        blackPieces.put("Kn2", new Knight(0, 6, ColorUtil.BLACK, 2));
+        blackPieces.put("R1", new Rook(0, 0, ColorUtil.BLACK, 1));
+        blackPieces.put("R2", new Rook(0, 7, ColorUtil.BLACK, 2));
+        for (int i = 0; i < 8; i++) {
+            blackPieces.put("P" + (i + 1), new Pawn(1, i, ColorUtil.BLACK, 0));
+        }
+
+        // Initialize white pieces on rows 7 and 8
+        whitePieces.put("K", new King(7, 4, ColorUtil.WHITE, 1));
+        whitePieces.put("Q", new Queen(7, 3, ColorUtil.WHITE, 1));
+        whitePieces.put("B1", new Bishop(7, 2, ColorUtil.WHITE, 1));
+        whitePieces.put("B2", new Bishop(7, 5, ColorUtil.WHITE, 2));
+        whitePieces.put("Kn1", new Knight(7, 1, ColorUtil.WHITE, 1));
+        whitePieces.put("Kn2", new Knight(7, 6, ColorUtil.WHITE, 2));
+        whitePieces.put("R1", new Rook(7, 0, ColorUtil.WHITE, 1));
+        whitePieces.put("R2", new Rook(7, 7, ColorUtil.WHITE, 2));
+        for (int i = 0; i < 8; i++) {
+            whitePieces.put("P" + (i + 1), new Pawn(6, i, ColorUtil.WHITE, 0));
+        }
+    }
+
+    private void placePieces() {
+        // Place white pieces
+        for (Piece piece : whitePieces.values()) {
+            this.getTiles()[piece.getPieceRow()][piece.getPieceCol()].setPiece(piece);
+            this.getTiles()[piece.getPieceRow()][piece.getPieceCol()].setImage();
+        }
+        // Place black pieces
+        for (Piece piece : blackPieces.values()) {
+            this.getTiles()[piece.getPieceRow()][piece.getPieceCol()].setPiece(piece);
+            this.getTiles()[piece.getPieceRow()][piece.getPieceCol()].setImage();
+        }
     }
 
     private void enable(){
@@ -144,4 +192,11 @@ public class GameBoard extends GridPane {
         this.selectedPiece = selectedPiece;
     }
 
+    public Map<String, Piece> getWhitePieces() {
+        return Map.copyOf(whitePieces);
+    }
+
+    public Map<String, Piece> getBlackPieces() {
+        return Map.copyOf(blackPieces);
+    }
 }

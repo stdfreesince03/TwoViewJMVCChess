@@ -1,5 +1,6 @@
 package com.example.test.GameUtils;
 
+import com.example.test.Pieces.King;
 import com.example.test.Pieces.Pawn;
 import com.example.test.Pieces.Piece;
 import javafx.event.EventHandler;
@@ -25,8 +26,13 @@ public class DragAndDropHandler {
         EventHandler<MouseEvent> onDragDetected = e -> {
             Dragboard db = t.startDragAndDrop(TransferMode.ANY);
             if (t.getTilePiece() != null) {
-                this.gb.drawPathOntoBoard(this.gb.getSelectedPiece().getAllPath
-                        (this.gb.getSelectedPiece().getPieceRow(),this.gb.getSelectedPiece().getPieceRow(),gb),false );
+                if(this.gb.getSelectedPiece() == null){
+                    this.gb.setSelectedPiece(t.getTilePiece());
+                }else{
+                    this.gb.drawPathOntoBoard(this.gb.getSelectedPiece().getAllPath
+                            (this.gb.getSelectedPiece().getPieceRow(),this.gb.getSelectedPiece().getPieceRow(),gb),false );
+                }
+
                 this.gb.setSelectedTile(t);
                 this.gb.setSelectedPiece(t.getTilePiece());
                 this.gb.drawPathOntoBoard(t.getTilePiece().getAllPath(t.getTileRowPos(),t.getTileColPos(),gb),true );
@@ -106,10 +112,23 @@ public class DragAndDropHandler {
                 if(!source.samePieceColor(t)  &&
                         source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)) {
                     t.setPiece((source.getTilePiece()));
+                    source.setPiece(null);
+                    King x = t.getTilePiece().getPieceType().getColor() ==
+                            ColorUtil.BLACK ? (King)this.gb.getBlackPieces().get("K") :(King) this.gb.getWhitePieces().get("K");
+                    if(x.isChecked(x.getPieceRow(),x.getPieceCol(),gb)){
+                        source.setPiece(t.getTilePiece());
+                        t.setPiece(null);
+                        source.setImage();
+                        System.out.println("King is checked");
+                    }else{
+                        t.setImage();
+                        success = true;
+                    }
+
                     if(t.getTilePiece() instanceof Pawn){
                         ((Pawn) t.getTilePiece()).setTwoStep(true);
                     }
-                    success = true;
+
                 }
 
             }
@@ -125,12 +144,13 @@ public class DragAndDropHandler {
 
         EventHandler<DragEvent> onDragDone = e->{
             if (e.getTransferMode() == TransferMode.MOVE) {
-                System.out.println("YES");
+//                System.out.println("YES");
                 t.setPiece(null);
             }
             else {
                 t.setPiece(t.getTilePiece());
             }
+            t.setImage();
 
         };
 

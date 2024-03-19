@@ -89,14 +89,15 @@ public class Tile extends Label {
     public void setPiece(Piece p){
 
         this.piece = p;
-
-
         if(this.piece != null){
-
             this.piece.setLoc(this.rowPos,this.colPos);
+        }
 
+    }
 
-            ImageView img = new ImageView(p.getPieceType().getImage());
+    public void setImage(){
+        if(this.piece != null){
+            ImageView img = new ImageView(this.getTilePiece().getPieceType().getImage());
             img.setFitWidth(60);
             img.setFitHeight(60);
 

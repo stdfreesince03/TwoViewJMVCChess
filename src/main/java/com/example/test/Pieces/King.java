@@ -51,6 +51,7 @@ public class King extends Piece{
                 .filter(Objects::nonNull)
                 .anyMatch(piece -> piece.getKey().equals("B"+checkerColor + piece.getKeyNum()) ||
                         piece.getKey().equals("Q"+checkerColor + piece.getKeyNum()) );
+
         boolean lHorse = Stream.of(new Location(row+1,col+2),
                 new Location(row+1,col-2) ,
                 new Location(row+2,col-1),new Location(row+2,col+1),
