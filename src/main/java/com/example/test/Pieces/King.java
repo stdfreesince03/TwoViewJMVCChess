@@ -39,14 +39,13 @@ public class King extends Piece{
     public boolean isChecked(int row ,int col ,GameBoard gb){
 
         String checkerColor = this.getPieceType().getColor() == ColorUtil.BLACK ?  "W" : "B" ;
-        boolean hasPiece = gb.getTiles()[row][col].hasPiece();
 
-        boolean straight = MoveHandler.straight(row,col,this,gb,hasPiece).stream()
+        boolean straight = MoveHandler.straight(row,col,this,gb).stream()
                 .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())
                 .filter(Objects::nonNull)
                  .anyMatch(piece -> piece.getKey().equals("Q"+checkerColor + piece.getKeyNum()) ||
                         piece.getKey().equals("R"+ checkerColor + piece.getKeyNum()) );
-        boolean diagonal = MoveHandler.diagonal(row,col,this,gb,hasPiece)
+        boolean diagonal = MoveHandler.diagonal(row,col,this,gb)
                 .stream()
                 .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())
                 .filter(Objects::nonNull)
@@ -75,13 +74,12 @@ public class King extends Piece{
                 .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())
                 .filter(Objects::nonNull)
                 .anyMatch(piece -> piece.getKey().equals("P" + checkerColor + piece.getKeyNum()));
-
-        Stream<Location> kingMovement = Stream.of(new Location(row,col+1),
+//
+      boolean kingCheck =Stream.of(new Location(row,col+1),
                 new Location(row,col-1),new Location(row-1,col),
-                new Location(row+1,col),new Location(row-1,col-1),
-                new Location(row-1,col+1),new Location(row+1,col-1),
-                new Location(row+1,col+1));
-       boolean kingCheck =kingMovement
+              new Location(row+1,col),new Location(row-1,col-1),
+              new Location(row-1,col+1),new Location(row+1,col-1),
+              new Location(row+1,col+1))
               .filter(l ->
                       (l.getRow() >= 0 && l.getRow() < 8) && (l.getCol() >= 0 && l.getCol() < 8) )
               .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())

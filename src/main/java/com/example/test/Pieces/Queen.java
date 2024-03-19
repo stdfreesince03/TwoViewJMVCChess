@@ -18,8 +18,8 @@ public class Queen extends Piece {
     @Override
     public List<Location> getAllPath(int row, int col,GameBoard gb) {
         List<Location> ret = new ArrayList<>();
-        ret.addAll(MoveHandler.straight(row,col,this,gb,false));
-        ret.addAll(MoveHandler.diagonal(row,col,this,gb,false));
+        ret.addAll(MoveHandler.straight(row,col,this,gb));
+        ret.addAll(MoveHandler.diagonal(row,col,this,gb));
         return ret;
     }
 
