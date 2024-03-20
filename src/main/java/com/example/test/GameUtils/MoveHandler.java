@@ -51,40 +51,49 @@ public class MoveHandler {
         }
     }
 
-    public static List<Location> diagonal(int row, int col ,Piece p,GameBoard gb){
+    public static List<Location> diagonal(int row, int col ,Piece p,GameBoard gb,boolean kingCheck){
         List<Location> ret = new ArrayList<>();
-        oneDirectionMultiple(ret,row,col,-1,1,p,gb);
-        oneDirectionMultiple(ret,row,col,1,-1,p,gb);
-        oneDirectionMultiple(ret,row,col,1,1,p,gb);
-        oneDirectionMultiple(ret,row,col,-1,-1,p,gb);
+        oneDirectionMultiple(ret,row,col,-1,1,p,gb,kingCheck);
+        oneDirectionMultiple(ret,row,col,1,-1,p,gb,kingCheck);
+        oneDirectionMultiple(ret,row,col,1,1,p,gb,kingCheck);
+        oneDirectionMultiple(ret,row,col,-1,-1,p,gb,kingCheck);
         return ret;
     }
 
-    public static List<Location> straight(int row, int col ,Piece p,GameBoard gb){
+    public static List<Location> straight(int row, int col ,Piece p,GameBoard gb,boolean kingCheck){
         List<Location> ret = new ArrayList<>();
-        oneDirectionMultiple(ret,row,col,0,1,p,gb);
-        oneDirectionMultiple(ret,row,col,0,-1,p,gb);
-        oneDirectionMultiple(ret,row,col,1,0,p,gb);
-        oneDirectionMultiple(ret,row,col,-1,0,p,gb);
+        oneDirectionMultiple(ret,row,col,0,1,p,gb,kingCheck);
+        oneDirectionMultiple(ret,row,col,0,-1,p,gb,kingCheck);
+        oneDirectionMultiple(ret,row,col,1,0,p,gb,kingCheck);
+        oneDirectionMultiple(ret,row,col,-1,0,p,gb,kingCheck);
         return ret;
     }
 
     private static void oneDirectionMultiple(List<Location> ret,
                                              int row, int col, int rowInc,int colInc,
-                                             Piece p,GameBoard gb){
-        ColorUtil color = p.getPieceType().getColor();
+                                             Piece p,GameBoard gb,boolean kingCheck){
         Tile[][] tiles = gb.getTiles();
 
         int i = row + rowInc;
         int j = col + colInc;
-        while(i>=0 && j>= 0&& i < 8 && j < 8 && (!tiles[i][j].hasPiece() || tiles[i][j].getTilePiece() == p)){
+
+        while(validTile(i,j)  && (!tiles[i][j].hasPiece() || tiles[i][j].getTilePiece() == p)){
             ret.add(new Location(i,j));
             i+= rowInc;
             j+= colInc;
         }
-        if(i>=0 && j>= 0&& i < 8 && j < 8 && !tiles[i][j].samePieceColor(tiles[row][col])){
-            ret.add(new Location(i,j));
+        if(validTile(i,j)){
+            if(!kingCheck){
+                if( !tiles[i][j].samePieceColor(tiles[p.getPieceRow()][p.getPieceCol()])){
+                    ret.add(new Location(i,j));
+                }
+            }else{
+                if( tiles[i][j].samePieceColor(tiles[row][col])){
+                    ret.add(new Location(i,j));
+                }
+            }
         }
+
     }
 
 
