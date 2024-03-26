@@ -9,7 +9,7 @@ import javafx.scene.input.*;
 
 import java.util.List;
 
-public abstract class Piece extends Node {
+public abstract class Piece {
 
     private Location loc;
     private PieceType pieceType;

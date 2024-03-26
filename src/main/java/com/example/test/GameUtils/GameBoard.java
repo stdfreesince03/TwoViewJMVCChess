@@ -111,24 +111,27 @@ public class GameBoard extends GridPane {
     }
 
     private void mouseClicked(MouseEvent event,Tile t1){
+        System.out.print("click detected,");
         if(t1.hasPiece()){
-            if(this.selectedTile != null && this.selectedPiece != null){
-                drawPathOntoBoard(this.selectedPiece.getAllPath
-                        (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos(),this),false);
-            }
+
+            allOff();
+
             this.selectedTile = t1;
             this.selectedPiece = t1.getTilePiece();
+
             drawPathOntoBoard(this.selectedPiece.getAllPath
                     (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos(),this),true);
 
-        } else{
+            System.out.println("click1");
+        }
+        else{
             if(this.selectedPiece != null){
                 drawPathOntoBoard(this.selectedPiece.getAllPath
                         (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos(),this),false);
                 this.selectedTile = t1;
                 this.selectedPiece = null;
             }
-
+            System.out.println("click2");
         }
     }
 
@@ -173,6 +176,14 @@ public class GameBoard extends GridPane {
            }
        }
 
+    }
+
+    void allOff(){
+        for(Tile x[] : tiles){
+            for (Tile t : x){
+                t.highlight(ColorUtil.NORMAL);
+            }
+        }
     }
 
 

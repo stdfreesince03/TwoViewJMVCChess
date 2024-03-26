@@ -39,19 +39,17 @@ public class King extends Piece{
     public boolean isChecked(int row ,int col ,GameBoard gb){
 
         String checkerColor = this.getPieceType().getColor() == ColorUtil.BLACK ?  "W" : "B" ;
-        boolean hasPiece = gb.getTiles()[row][col].hasPiece();
-        boolean straight = MoveHandler.straight(row,col,this,gb,hasPiece).stream()
+        boolean straight = MoveHandler.straight(row,col,this,gb).stream()
                 .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())
                 .filter(Objects::nonNull)
                  .anyMatch(piece -> piece.getKey().equals("Q"+checkerColor + piece.getKeyNum()) ||
                         piece.getKey().equals("R"+ checkerColor + piece.getKeyNum()) );
-        boolean diagonal = MoveHandler.diagonal(row,col,this,gb,hasPiece)
+        boolean diagonal = MoveHandler.diagonal(row,col,this,gb)
                 .stream()
                 .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())
                 .filter(Objects::nonNull)
                 .anyMatch(piece -> piece.getKey().equals("B"+checkerColor + piece.getKeyNum()) ||
                         piece.getKey().equals("Q"+checkerColor + piece.getKeyNum()) );
-        System.out.println(diagonal);
         boolean lHorse = Stream.of(new Location(row+1,col+2),
                 new Location(row+1,col-2) ,
                 new Location(row+2,col-1),new Location(row+2,col+1),

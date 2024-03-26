@@ -20,13 +20,14 @@ public enum PieceType {
     PAWNW("src/main/java/com/example/test/Images/Pawn White.png");
 
 
-    private String image;
-    PieceType(String image){
-        this.image = image;
+    private final Image image;
+
+    PieceType(String imagePath) {
+        this.image = new Image(new File(imagePath).toURI().toString());
     }
 
-    public Image getImage(){
-        return new Image(new File(image).toURI().toString());
+    public Image getImage() {
+        return this.image;
     }
 
    public  String getKey(int keyNum){

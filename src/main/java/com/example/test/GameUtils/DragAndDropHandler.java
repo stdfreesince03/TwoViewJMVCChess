@@ -25,14 +25,15 @@ public class DragAndDropHandler {
       Consumer<Tile> onDragDetected = t -> {
         EventHandler<MouseEvent> onDragDetected = e -> {
             Dragboard db = t.startDragAndDrop(TransferMode.ANY);
+            System.out.println("Drag detected");
+
             if (t.getTilePiece() != null) {
+
                 if(this.gb.getSelectedPiece() == null){
                     this.gb.setSelectedPiece(t.getTilePiece());
-                }else{
-                    this.gb.drawPathOntoBoard(this.gb.getSelectedPiece().getAllPath
-                            (this.gb.getSelectedPiece().getPieceRow(),this.gb.getSelectedPiece().getPieceRow(),gb),false );
                 }
 
+                this.gb.allOff();
                 this.gb.setSelectedTile(t);
                 this.gb.setSelectedPiece(t.getTilePiece());
                 this.gb.drawPathOntoBoard(t.getTilePiece().getAllPath(t.getTileRowPos(),t.getTileColPos(),gb),true );
@@ -123,10 +124,10 @@ public class DragAndDropHandler {
                     }else{
                         t.setImage();
                         success = true;
-                    }
 
-                    if(t.getTilePiece() instanceof Pawn){
-                        ((Pawn) t.getTilePiece()).setTwoStep(true);
+                        if(t.getTilePiece() instanceof Pawn){
+                            ((Pawn) t.getTilePiece()).setTwoStep(true);
+                        }
                     }
 
                 }

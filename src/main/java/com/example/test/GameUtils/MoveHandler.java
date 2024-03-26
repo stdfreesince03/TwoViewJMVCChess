@@ -51,27 +51,27 @@ public class MoveHandler {
         }
     }
 
-    public static List<Location> diagonal(int row, int col ,Piece p,GameBoard gb,boolean kingCheck){
+    public static List<Location> diagonal(int row, int col ,Piece p,GameBoard gb){
         List<Location> ret = new ArrayList<>();
-        oneDirectionMultiple(ret,row,col,-1,1,p,gb,kingCheck);
-        oneDirectionMultiple(ret,row,col,1,-1,p,gb,kingCheck);
-        oneDirectionMultiple(ret,row,col,1,1,p,gb,kingCheck);
-        oneDirectionMultiple(ret,row,col,-1,-1,p,gb,kingCheck);
+        oneDirectionMultiple(ret,row,col,-1,1,p,gb);
+        oneDirectionMultiple(ret,row,col,1,-1,p,gb);
+        oneDirectionMultiple(ret,row,col,1,1,p,gb);
+        oneDirectionMultiple(ret,row,col,-1,-1,p,gb);
         return ret;
     }
 
-    public static List<Location> straight(int row, int col ,Piece p,GameBoard gb,boolean kingCheck){
+    public static List<Location> straight(int row, int col ,Piece p,GameBoard gb){
         List<Location> ret = new ArrayList<>();
-        oneDirectionMultiple(ret,row,col,0,1,p,gb,kingCheck);
-        oneDirectionMultiple(ret,row,col,0,-1,p,gb,kingCheck);
-        oneDirectionMultiple(ret,row,col,1,0,p,gb,kingCheck);
-        oneDirectionMultiple(ret,row,col,-1,0,p,gb,kingCheck);
+        oneDirectionMultiple(ret,row,col,0,1,p,gb);
+        oneDirectionMultiple(ret,row,col,0,-1,p,gb);
+        oneDirectionMultiple(ret,row,col,1,0,p,gb);
+        oneDirectionMultiple(ret,row,col,-1,0,p,gb);
         return ret;
     }
 
     private static void oneDirectionMultiple(List<Location> ret,
                                              int row, int col, int rowInc,int colInc,
-                                             Piece p,GameBoard gb,boolean kingCheck){
+                                             Piece p,GameBoard gb){
         Tile[][] tiles = gb.getTiles();
 
         int i = row + rowInc;
@@ -83,15 +83,10 @@ public class MoveHandler {
             j+= colInc;
         }
         if(validTile(i,j)){
-            if(!kingCheck){
-                if( !tiles[i][j].samePieceColor(tiles[p.getPieceRow()][p.getPieceCol()])){
+            if( !tiles[i][j].samePieceColor(tiles[p.getPieceRow()][p.getPieceCol()])){
                     ret.add(new Location(i,j));
-                }
-            }else{
-                if( tiles[i][j].samePieceColor(tiles[row][col])){
-                    ret.add(new Location(i,j));
-                }
             }
+
         }
 
     }

@@ -24,8 +24,6 @@ public class Tile extends Label {
         this.rowPos =rowPos;
         this.colPos = colPos;
         this.highlight(ColorUtil.NORMAL);
-
-
     }
 
 
