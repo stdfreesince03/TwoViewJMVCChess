@@ -36,7 +36,7 @@ public class DragAndDropHandler {
                 this.gb.allOff();
                 this.gb.setSelectedTile(t);
                 this.gb.setSelectedPiece(t.getTilePiece());
-                this.gb.drawPathOntoBoard(t.getTilePiece().getAllPath(t.getTileRowPos(),t.getTileColPos(),gb),true );
+                this.gb.drawPathOntoBoard(t.getTilePiece().getAllPath(t.getTileRowPos(),t.getTileColPos(),gb) );
 
                 ClipboardContent content = new ClipboardContent();
                 content.putString(t.getText());
@@ -109,7 +109,7 @@ public class DragAndDropHandler {
             Tile source = (Tile) e.getGestureSource();
 
             if(source != t ){
-                this.gb.drawPathOntoBoard(source.getTilePiece().getAllPath(source.getTileRowPos(),source.getTileColPos(),gb),false );
+                this.gb.drawPathOntoBoard(source.getTilePiece().getAllPath(source.getTileRowPos(),source.getTileColPos(),gb) );
                 if(!source.samePieceColor(t)  &&
                         source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)) {
                     t.setPiece((source.getTilePiece()));
@@ -128,6 +128,7 @@ public class DragAndDropHandler {
                         if(t.getTilePiece() instanceof Pawn){
                             ((Pawn) t.getTilePiece()).setTwoStep(true);
                         }
+                        gb.allOff();
                     }
 
                 }

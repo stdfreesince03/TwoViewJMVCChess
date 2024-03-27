@@ -120,14 +120,14 @@ public class GameBoard extends GridPane {
             this.selectedPiece = t1.getTilePiece();
 
             drawPathOntoBoard(this.selectedPiece.getAllPath
-                    (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos(),this),true);
+                    (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos(),this));
 
             System.out.println("click1");
         }
         else{
             if(this.selectedPiece != null){
                 drawPathOntoBoard(this.selectedPiece.getAllPath
-                        (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos(),this),false);
+                        (this.selectedTile.getTileRowPos(), this.selectedTile.getTileColPos(),this));
                 this.selectedTile = t1;
                 this.selectedPiece = null;
             }
@@ -137,8 +137,8 @@ public class GameBoard extends GridPane {
 
 
 
-     void drawPathOntoBoard(List<Location> paths,boolean  x){
-       if(x){
+     void drawPathOntoBoard(List<Location> paths){
+
            for(Location l : paths){
                int row = l.getRow();
                int col = l.getCol();
@@ -159,27 +159,12 @@ public class GameBoard extends GridPane {
                }
 
            }
-       }else{
-           for(Location l : paths) {
 
-
-               int row = l.getRow();
-               int col = l.getCol();
-
-               if(row >= 8 || col >=8 || col < 0 || row < 0 ){
-                   continue;
-               }
-
-               if(tiles[row][col] != null ){
-                   tiles[row][col].highlight(ColorUtil.NORMAL);
-               }
-           }
-       }
 
     }
 
     void allOff(){
-        for(Tile x[] : tiles){
+        for(Tile[] x : tiles){
             for (Tile t : x){
                 t.highlight(ColorUtil.NORMAL);
             }

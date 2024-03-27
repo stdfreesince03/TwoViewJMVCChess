@@ -50,11 +50,11 @@ public class King extends Piece{
                 .filter(Objects::nonNull)
                 .anyMatch(piece -> piece.getKey().equals("B"+checkerColor + piece.getKeyNum()) ||
                         piece.getKey().equals("Q"+checkerColor + piece.getKeyNum()) );
-        boolean lHorse = Stream.of(new Location(row+1,col+2),
-                new Location(row+1,col-2) ,
-                new Location(row+2,col-1),new Location(row+2,col+1),
-                new Location(row-2,col-1),new Location(row-2,col+1),
-                new Location(row-1,col-2),new Location(row-1,col+2)).filter(l ->
+        boolean lHorse = Stream.of(Location.at(row+1,col+2),
+                Location.at(row+1,col-2) ,
+                Location.at(row+2,col-1),Location.at(row+2,col+1),
+                Location.at(row-2,col-1),Location.at(row-2,col+1),
+                Location.at(row-1,col-2),Location.at(row-1,col+2)).filter(l ->
                 (l.getRow() >= 0 && l.getRow() < 8) && (l.getCol() >= 0 && l.getCol() < 8) )
                 .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())
                 .filter(Objects::nonNull)
@@ -62,11 +62,11 @@ public class King extends Piece{
 
         Stream<Location>  pawnStream;
         if(this.getPieceType().getColor() == ColorUtil.BLACK){
-            pawnStream =Stream.of(new Location(row+1,col+1),
-                    new Location(row+1,col-1));
+            pawnStream =Stream.of(Location.at(row+1,col+1),
+                    Location.at(row+1,col-1));
         }else{
-            pawnStream =Stream.of(new Location(row-1,col+1),
-                    new Location(row-1,col-1));
+            pawnStream =Stream.of(Location.at(row-1,col+1),
+                    Location.at(row-1,col-1));
         }
         boolean pawnCheck = pawnStream
                 .filter(l -> (l.getRow() >= 0 && l.getRow() < 8) && (l.getCol() >= 0 && l.getCol() < 8))
@@ -74,11 +74,11 @@ public class King extends Piece{
                 .filter(Objects::nonNull)
                 .anyMatch(piece -> piece.getKey().equals("P" + checkerColor + piece.getKeyNum()));
 //
-      boolean kingCheck =Stream.of(new Location(row,col+1),
-                new Location(row,col-1),new Location(row-1,col),
-              new Location(row+1,col),new Location(row-1,col-1),
-              new Location(row-1,col+1),new Location(row+1,col-1),
-              new Location(row+1,col+1))
+      boolean kingCheck =Stream.of(Location.at(row,col+1),
+                Location.at(row,col-1),Location.at(row-1,col),
+              Location.at(row+1,col),Location.at(row-1,col-1),
+              Location.at(row-1,col+1),Location.at(row+1,col-1),
+              Location.at(row+1,col+1))
               .filter(l ->
                       (l.getRow() >= 0 && l.getRow() < 8) && (l.getCol() >= 0 && l.getCol() < 8) )
               .map(l -> gb.getTiles()[l.getRow()][l.getCol()].getTilePiece())

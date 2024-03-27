@@ -18,11 +18,11 @@ public abstract class Piece {
 
 
     public Piece(int rowPos, int colPos){
-        this.loc = new Location(rowPos,colPos);
+        this.loc = Location.at(rowPos,colPos);
     }
 
   public  boolean isValidPath(int row , int col, GameBoard gb){
-       return (getAllPath(this.getPieceRow(),this.getPieceCol(),gb).contains(new Location(row,col)));
+       return (getAllPath(this.getPieceRow(),this.getPieceCol(),gb).contains(Location.at(row,col)));
     }
     public abstract List<Location> getAllPath(int row , int col ,GameBoard gb);
 
@@ -41,8 +41,7 @@ public abstract class Piece {
 
 
     public void setLoc(int row,int col) {
-        this.loc.setRow(row);
-        this.loc.setCol(col);
+        this.loc = Location.at(row,col);
     }
 
     protected void setPieceType(PieceType pieceType) {

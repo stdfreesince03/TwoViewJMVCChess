@@ -24,10 +24,10 @@ public class Knight extends Piece{
 
     @Override
     public List<Location> getAllPath(int row, int col,GameBoard gb) {
-         return new ArrayList<Location>(List.of(new Location(row+1,col+2),
-                 new Location(row+1,col-2) ,
-                 new Location(row+2,col-1),new Location(row+2,col+1),
-                 new Location(row-2,col-1),new Location(row-2,col+1),
-                 new Location(row-1,col-2),new Location(row-1,col+2)));
+         return new ArrayList<Location>(List.of(Location.at(row+1,col+2),
+                 Location.at(row+1,col-2) ,
+                 Location.at(row+2,col-1),Location.at(row+2,col+1),
+                 Location.at(row-2,col-1),Location.at(row-2,col+1),
+                 Location.at(row-1,col-2),Location.at(row-1,col+2)));
     }
 }

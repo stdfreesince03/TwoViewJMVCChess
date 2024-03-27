@@ -23,7 +23,7 @@ public class MoveHandler {
         int i = row + rowInc ;
         int j = col + colInc;
         if(validTile(i,j)  && (!tiles[i][j].hasPiece() || !tiles[i][j].samePieceColor(tiles[row][col]) )){
-            ret.add(new Location(i,j));
+            ret.add(Location.at(i,j));
         }
     }
 
@@ -34,19 +34,19 @@ public class MoveHandler {
         int col = p.getPieceCol();
 
         if(!(row + step >= 8 || row+step < 0) && !tiles[row + step][col].hasPiece() ){
-            ret.add(new Location(row+step,col));
+            ret.add(Location.at(row+step,col));
         }
         if(!(row + (2*step) >= 8 || row + (2*step) < 0) && !(tiles[row + (2*step)][col].hasPiece() || p.hasTwoStepped()) ){
-            ret.add(new Location(row+(2*step),col));
+            ret.add(Location.at(row+(2*step),col));
         }
         if(!(row + step >= 8 || row+step < 0) && col + 1 < 8 && tiles[row + step][col + 1].hasPiece()){
             if(tiles[row+step][col+1].getTilePiece().getPieceType().getColor() != p.getPieceType().getColor()){
-                ret.add(new Location(row+step,col+1));
+                ret.add(Location.at(row+step,col+1));
             }
         }
         if(!(row + step >= 8 || row+step < 0) && col-1 >= 0 && tiles[row + step][col - 1].hasPiece()){
             if(tiles[row+step][col-1].getTilePiece().getPieceType().getColor() != p.getPieceType().getColor()){
-                ret.add(new Location(row+step,col-1));
+                ret.add(Location.at(row+step,col-1));
             }
         }
     }
@@ -78,13 +78,13 @@ public class MoveHandler {
         int j = col + colInc;
 
         while(validTile(i,j)  && (!tiles[i][j].hasPiece() || tiles[i][j].getTilePiece() == p)){
-            ret.add(new Location(i,j));
+            ret.add(Location.at(i,j));
             i+= rowInc;
             j+= colInc;
         }
         if(validTile(i,j)){
             if( !tiles[i][j].samePieceColor(tiles[p.getPieceRow()][p.getPieceCol()])){
-                    ret.add(new Location(i,j));
+                    ret.add(Location.at(i,j));
             }
 
         }
