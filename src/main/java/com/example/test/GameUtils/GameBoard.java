@@ -172,27 +172,27 @@ public class GameBoard extends GridPane {
     }
 
 
-    public Tile[][] getTiles() {
+    public  Tile[][] getTiles() {
         return tiles;
     }
 
-    public Piece getSelectedPiece(){
+    Piece getSelectedPiece(){
         return this.selectedPiece;
     }
 
-    public void setSelectedTile(Tile selectedTile) {
+     void setSelectedTile(Tile selectedTile) {
         this.selectedTile = selectedTile;
     }
 
-    public void setSelectedPiece(Piece selectedPiece) {
+    void setSelectedPiece(Piece selectedPiece) {
         this.selectedPiece = selectedPiece;
     }
 
-    public Map<String, Piece> getWhitePieces() {
+     Map<String, Piece> getWhitePieces() {
         return Map.copyOf(whitePieces);
     }
 
-    public Map<String, Piece> getBlackPieces() {
+     Map<String, Piece> getBlackPieces() {
         return Map.copyOf(blackPieces);
     }
 }

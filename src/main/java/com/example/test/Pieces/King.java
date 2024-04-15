@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 public class King extends Piece{
+    private boolean hasMoved = false;
     public King(int rowPos, int colPos, ColorUtil color, int keyNum) {
         super(rowPos, colPos);
         super.setPieceType(color.equals(ColorUtil.WHITE) ? PieceType.KINGW : PieceType.KINGB );
@@ -26,6 +27,17 @@ public class King extends Piece{
         MoveHandler.kingSpecial(ret,1,1,this,gb);
         MoveHandler.kingSpecial(ret,0,1,this,gb);
         MoveHandler.kingSpecial(ret,-1,1,this,gb);
+        if(!hasMoved()){
+            if(castle(gb,2,true) != null){
+                MoveHandler.kingSpecial(ret,0,2,this,gb);
+            }
+            if(castle(gb,-2,true) != null){
+                MoveHandler.kingSpecial(ret,0,-2,this,gb);
+            }
+
+        }
+
+
 
         ret = ret.stream()
                 .filter(l-> (!isChecked(l.getRow(),l.getCol(),gb)) )
@@ -88,6 +100,46 @@ public class King extends Piece{
 
         return straight || lHorse || diagonal || pawnCheck || kingCheck;
 
+    }
+
+    public Rook castle(GameBoard gb,int colMovement,boolean path){
+        Rook ret = null;
+        int rookAdd = 0;
+        if(this.hasMoved()){
+            return null;
+        }
+        if(!path){
+            if(colMovement ==2 ){
+                rookAdd = 1;
+            }else{
+                rookAdd = -2;
+            }
+        }else{
+            if(colMovement ==2 ){
+                rookAdd = 3;
+            }else{
+                rookAdd = -4;
+            }
+        }
+
+        if(!(gb.getTiles()[this.getPieceRow()][this.getPieceCol() + rookAdd ].getTilePiece() instanceof  Rook) ){
+                return null;
+        }
+        ret = (Rook) gb.getTiles()[this.getPieceRow()][this.getPieceCol() + rookAdd ].getTilePiece();
+        System.out.println(ret.getKey());
+
+        if(ret.hasMoved()){
+            return null;
+        }
+        return ret;
+    }
+
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
+    public void moved() {
+        this.hasMoved = true;
     }
 
     public boolean isCheckMated(int row, int col, GameBoard gb){

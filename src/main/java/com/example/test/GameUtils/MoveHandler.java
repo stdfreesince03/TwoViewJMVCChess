@@ -1,5 +1,6 @@
 package com.example.test.GameUtils;
 
+import com.example.test.Pieces.King;
 import com.example.test.Pieces.Pawn;
 import com.example.test.Pieces.Piece;
 
@@ -25,6 +26,7 @@ public class MoveHandler {
         if(validTile(i,j)  && (!tiles[i][j].hasPiece() || !tiles[i][j].samePieceColor(tiles[row][col]) )){
             ret.add(Location.at(i,j));
         }
+
     }
 
     public static void pawnSpecial (List<Location> ret, Pawn p, GameBoard gb){

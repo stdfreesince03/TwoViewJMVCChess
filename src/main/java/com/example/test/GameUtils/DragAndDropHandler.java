@@ -3,6 +3,7 @@ package com.example.test.GameUtils;
 import com.example.test.Pieces.King;
 import com.example.test.Pieces.Pawn;
 import com.example.test.Pieces.Piece;
+import com.example.test.Pieces.Rook;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.ImageView;
@@ -112,24 +113,69 @@ public class DragAndDropHandler {
                 this.gb.drawPathOntoBoard(source.getTilePiece().getAllPath(source.getTileRowPos(),source.getTileColPos(),gb) );
                 if(!source.samePieceColor(t)  &&
                         source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)) {
+
                     t.setPiece((source.getTilePiece()));
                     source.setPiece(null);
+
                     King x = t.getTilePiece().getPieceType().getColor() ==
                             ColorUtil.BLACK ? (King)this.gb.getBlackPieces().get("K") :(King) this.gb.getWhitePieces().get("K");
+                    int colMovement = t.getTileColPos() - source.getTileColPos();
+
                     if(x.isChecked(x.getPieceRow(),x.getPieceCol(),gb)){
                         source.setPiece(t.getTilePiece());
                         t.setPiece(null);
                         source.setImage();
                         System.out.println("King is checked");
-                    }else{
+                    }
+                    else if(x == t.getTilePiece() && !x.hasMoved() && (colMovement == 2 || colMovement == -2 )){
+                        Rook r = null;
+//
+                        if( (r = x.castle(gb,colMovement,false)) != null ) {
+                            int rookRow, rookCol = -1;
+                            Tile rookTarget = null, rookSource = null;
+
+                            if (colMovement == 2) {
+                                rookTarget = gb.getTiles()[x.getPieceRow()][x.getPieceCol() - 1];
+                            } else {
+                                rookTarget = gb.getTiles()[x.getPieceRow()][x.getPieceCol() + 1];
+                            }
+
+                            rookRow = r.getPieceRow();
+                            rookCol = r.getPieceCol();
+                            rookSource = gb.getTiles()[rookRow][rookCol];
+
+
+                            assert rookTarget != null;
+                            rookTarget.setPiece(r);
+                            rookSource.setPiece(null);
+                            rookTarget.setImage();
+                            rookSource.setImage();
+
+                            t.setImage();
+                            success = true;
+
+                        } else{
+                            source.setPiece(t.getTilePiece());
+                            t.setPiece(null);
+                            source.setImage();
+                        }
+                    }
+                    else{
                         t.setImage();
                         success = true;
 
-                        if(t.getTilePiece() instanceof Pawn){
-                            ((Pawn) t.getTilePiece()).setTwoStep(true);
-                        }
-                        gb.allOff();
                     }
+
+                    if(t.getTilePiece() instanceof  King && !((King) t.getTilePiece()).hasMoved() ){
+                        ((King)(t.getTilePiece())).moved();
+                    }
+                    else if(t.getTilePiece() instanceof Pawn){
+                        ((Pawn) t.getTilePiece()).setTwoStep(true);
+                    } else if(t.getTilePiece() instanceof Rook && !((Rook) t.getTilePiece()).hasMoved() ){
+                        ((Rook)(t.getTilePiece())).moved();
+                    }
+
+                    gb.allOff();
 
                 }
 

@@ -104,6 +104,8 @@ public class Tile extends Label {
             this.setAlignment(Pos.BASELINE_CENTER);
             this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
             this.highlight(ColorUtil.NORMAL);
+        }else{
+            this.setGraphic(null);
         }
 
     }
