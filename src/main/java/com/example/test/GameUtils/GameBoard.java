@@ -3,7 +3,9 @@ package com.example.test.GameUtils;
 import com.example.test.Pieces.*;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Control;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -68,7 +70,10 @@ public class GameBoard extends GridPane {
 
     }
 
-    private void initializePieces() {;
+
+
+     void initializePieces() {;
+
 
         blackPieces.put("K", new King(0, 4, ColorUtil.BLACK, 1));
         blackPieces.put("Q", new Queen(0, 3, ColorUtil.BLACK, 1));
@@ -96,7 +101,7 @@ public class GameBoard extends GridPane {
         }
     }
 
-    private void placePieces() {
+     void placePieces() {
         // Place white pieces
         for (Piece piece : whitePieces.values()) {
             this.getTiles()[piece.getPieceRow()][piece.getPieceCol()].setPiece(piece);
@@ -109,7 +114,7 @@ public class GameBoard extends GridPane {
         }
     }
 
-    private void enable(){
+     void enable(){
         this.getChildren().forEach(c -> {
             Tile tile = (Tile) c;
             if ((tile.hasPiece() && tile.getTilePiece().getPieceType().getColor() == currentPlayer) ||  (!tile.hasPiece())) {
@@ -202,6 +207,23 @@ public class GameBoard extends GridPane {
     }
 
 
+    boolean playerCheckMated(){
+        Map<String,Piece> map = this.currentPlayer ==
+                ColorUtil.BLACK ? this.blackPieces : this.whitePieces;
+        return ((King) map.get("K")).isCheckMated(this);
+    }
+
+    boolean tie(){
+        Map<String,Piece> map = this.currentPlayer ==
+                ColorUtil.BLACK ? this.blackPieces : this.whitePieces;
+        return ((King) map.get("K")).isStaleMate(this);
+    }
+
+
+    public ColorUtil getCurrentPlayer(){
+        return this.currentPlayer;
+    }
+
 
     public  Tile[][] getTiles() {
         return tiles;
@@ -219,11 +241,11 @@ public class GameBoard extends GridPane {
         this.selectedPiece = selectedPiece;
     }
 
-     Map<String, Piece> getWhitePieces() {
+     public Map<String, Piece> getWhitePieces() {
         return Map.copyOf(whitePieces);
     }
 
-     Map<String, Piece> getBlackPieces() {
+     public Map<String, Piece> getBlackPieces() {
         return Map.copyOf(blackPieces);
     }
 }

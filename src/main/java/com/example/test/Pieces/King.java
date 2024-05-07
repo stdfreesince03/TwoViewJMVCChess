@@ -1,9 +1,11 @@
 package com.example.test.Pieces;
 
 import com.example.test.GameUtils.*;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -142,12 +144,23 @@ public class King extends Piece{
         this.hasMoved = true;
     }
 
-    public boolean staleMate(GameBoard gb){
+    public boolean isStaleMate(GameBoard gb){
+        Map<String,Piece> check = (this.getPieceType().getColor() == ColorUtil.WHITE) ? gb.getWhitePieces() : gb.getBlackPieces();
+        Map<String,Piece> opposite = (this.getPieceType().getColor() == ColorUtil.WHITE) ? gb.getBlackPieces(): gb.getWhitePieces();
+        if(opposite.size() == 1 && check.size() ==1 ){
+            return true;
+        }
+        for(Piece p: check.values()){
+            if(!p.getAllPath(p.getPieceRow(), p.getPieceCol(), gb).isEmpty()){
+                return false;
+            }
+        }
         return getAllPath(this.getPieceRow(),this.getPieceCol(),gb).isEmpty();
     }
 
     public boolean isCheckMated(GameBoard gb){
-        return isChecked(this.getPieceRow(),this.getPieceCol(),gb) && staleMate(gb);
+        return isChecked(this.getPieceRow(),this.getPieceCol(),gb)
+                && getAllPath(this.getPieceRow(),this.getPieceCol(),gb).isEmpty() ;
     }
 
 }

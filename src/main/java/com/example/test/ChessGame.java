@@ -14,6 +14,7 @@ public class ChessGame extends Application {
 
         GameLoop gl = new GameLoop(stage);
 
+
         Scene scene = new Scene(gl.getGameBoard(), 640, 640);
 
         stage.setResizable(true);
@@ -21,6 +22,8 @@ public class ChessGame extends Application {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
+
+        gl.runGame();
     }
 
     public static void main(String[] args) {
