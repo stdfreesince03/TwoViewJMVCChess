@@ -2,18 +2,9 @@ package com.example.test.GameUtils;
 
 import com.example.test.Pieces.King;
 import com.example.test.Pieces.Pawn;
-import com.example.test.Pieces.Piece;
 import com.example.test.Pieces.Rook;
 import javafx.event.EventHandler;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 public class DragAndDropHandler {
@@ -180,6 +171,7 @@ public class DragAndDropHandler {
                 }
 
             }
+            if(success) gb.playerTurn();
             e.setDropCompleted(success);
 
             e.consume();

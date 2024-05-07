@@ -8,6 +8,7 @@ import javafx.scene.control.Control;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import static com.example.test.GameUtils.DragAndDropHandler.*;
@@ -17,6 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 public class GameBoard extends GridPane {
+
+
+    private ColorUtil currentPlayer = ColorUtil.WHITE;
+
     private final Tile[][] tiles;
     private Piece selectedPiece;
 
@@ -29,6 +34,8 @@ public class GameBoard extends GridPane {
 
     private Map<String, Piece> whitePieces = new HashMap<>();
     private Map<String, Piece> blackPieces = new HashMap<>();
+
+
 
     public GameBoard(){
 
@@ -53,9 +60,10 @@ public class GameBoard extends GridPane {
             col = row;
         }
 
-        enable();
+
         initializePieces();
         placePieces();
+        enable();
 
 
     }
@@ -102,11 +110,28 @@ public class GameBoard extends GridPane {
     }
 
     private void enable(){
-        this.getChildren().forEach(c ->{
-             c.setOnMouseClicked(e -> mouseClicked(e,(Tile) c));
-             dragAndDropHandler.onDragDetected.andThen(dragAndDropHandler.onDragExited).andThen(dragAndDropHandler.onDragEntered)
-                     .andThen(dragAndDropHandler.onDragOver).andThen(dragAndDropHandler.onDragDropped).
-                     andThen(dragAndDropHandler.onDragDone).accept((Tile) c);
+        this.getChildren().forEach(c -> {
+            Tile tile = (Tile) c;
+            if ((tile.hasPiece() && tile.getTilePiece().getPieceType().getColor() == currentPlayer) ||  (!tile.hasPiece())) {
+
+                System.out.println("Enabling tile at (" + GridPane.getRowIndex(tile) + ", " + GridPane.getColumnIndex(tile) + ") for " + currentPlayer);
+                c.setOnMouseClicked(e -> mouseClicked(e, tile));
+                dragAndDropHandler.onDragDetected.andThen(dragAndDropHandler.onDragExited)
+                        .andThen(dragAndDropHandler.onDragEntered)
+                        .andThen(dragAndDropHandler.onDragOver)
+                        .andThen(dragAndDropHandler.onDragDropped)
+                        .andThen(dragAndDropHandler.onDragDone)
+                        .accept(tile);
+            } else {
+                System.out.println("Disabling tile at (" + GridPane.getRowIndex(tile) + ", " + GridPane.getColumnIndex(tile) + ")");
+                c.setOnMouseClicked(null);
+                c.setOnDragDetected(null);
+                c.setOnDragEntered(null);
+                c.setOnDragExited(null);
+                c.setOnDragOver(null);
+                c.setOnDragDropped(null);
+                c.setOnDragDone(null);
+            }
         });
     }
 
@@ -170,6 +195,12 @@ public class GameBoard extends GridPane {
             }
         }
     }
+
+    void playerTurn(){
+        this.currentPlayer = (this.currentPlayer == ColorUtil.WHITE) ? ColorUtil.BLACK : ColorUtil.WHITE;
+        enable();
+    }
+
 
 
     public  Tile[][] getTiles() {

@@ -142,8 +142,12 @@ public class King extends Piece{
         this.hasMoved = true;
     }
 
-    public boolean isCheckMated(int row, int col, GameBoard gb){
-        return getAllPath(row,col,gb).isEmpty();
+    public boolean staleMate(GameBoard gb){
+        return getAllPath(this.getPieceRow(),this.getPieceCol(),gb).isEmpty();
+    }
+
+    public boolean isCheckMated(GameBoard gb){
+        return isChecked(this.getPieceRow(),this.getPieceCol(),gb) && staleMate(gb);
     }
 
 }
