@@ -24,10 +24,8 @@ public class GameRules {
         Piece srcPiece = gameBoard.getTile(curr.row(), curr.col()).getPiece();
         Piece destPiece = gameBoard.getTile(next.row(), next.col()).getPiece();
 
-
-        if (srcPiece == null) {
-            System.out.println("YOU DUMB BITCH");
-            return true;
+        if(destPiece instanceof King){
+            return false;
         }
 
         // Perform the move
@@ -46,9 +44,24 @@ public class GameRules {
 
     public static boolean isKingInCheck(ColorUtil color) {
         // Get the king of the specified color
-        King king = (color==ColorUtil.BLACK) ? gameBoard.getBlackKing() : gameBoard.getWhiteKing();
-        int row = gameBoard.getKingLocation(color).row();
-        int col = gameBoard.getKingLocation(color).col();
+        King king = (color==ColorUtil.BLACK) ? gameBoard.getBlackKing() : gameBoard.getWhiteKing();;
+        Location loc = gameBoard.getKingLocation(king);
+        if(loc == null){
+            System.out.println("-----------------------------------------------------------------");
+            for(int i = 0;i<8;i++){
+                for(int j = 0;j<8;j++){
+                    Tile t = gameBoard.getTile(i,j);
+                    if(t.hasPiece()){
+                        System.out.println("( " + t.getLocation().row() + ", " + t.getLocation().col() + ")," +
+                                t.getPiece().getClass().getSimpleName() +  " " + t.getPiece().getColor()) ;
+                    }
+                }
+            }
+            System.out.println("-----------------------------------------------------------------");
+        }
+
+        int row = loc.row();
+        int col = loc.col();
 
         // Check straight threats
         if (checkStraightThreats(king, row, col))return true;
