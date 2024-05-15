@@ -22,7 +22,24 @@ public class King extends Piece  {
     @Override
     public List<Location> getPossibleMoves(int row, int col , GameBoard gb) {
         List<Location> moves = MovementHelper.kingSpecial(this,row,col,gb);
-        return moves.stream().filter(l -> {
+
+        if(!this.hasMoved){
+            Piece xRight =  gb.getTile(row,col+3).getPiece();
+            Piece xLeft = gb.getTile(row,col-4).getPiece();
+
+            if(xRight instanceof Rook && !((Rook) xRight) .hasMoved()){
+                if(!GameRules.kingEndangered(LocAt.at(row,col),LocAt.at(row,col+1),gb)){
+                    moves.add(LocAt.at(row,col+2));
+                }
+            }
+
+            if(xLeft instanceof Rook && !((Rook) xLeft).hasMoved()){
+                if(!GameRules.kingEndangered(LocAt.at(row,col),LocAt.at(row,col-1),gb)){
+                    moves.add(LocAt.at(row,col-2));
+                }
+            }
+        }
+       return  moves.stream().filter(l -> {
             try{
                 return !GameRules.kingEndangered(LocAt.at(row,col),l,gb);
             }catch (Exception e){

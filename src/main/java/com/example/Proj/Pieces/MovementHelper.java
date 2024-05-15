@@ -21,6 +21,7 @@ public class MovementHelper {
         oneDirectionSingle(ret,row ,col ,-1,-1,p,gb);
         oneDirectionSingle(ret,row ,col ,0,-1,p,gb);
         oneDirectionSingle(ret,row ,col ,0,1,p,gb);
+
         return ret;
 
     }
@@ -28,8 +29,6 @@ public class MovementHelper {
     public static List<Location> pawnAttacks(int row, int col, ColorUtil color) {
         List<Location> attacks = new ArrayList<>();
         int direction = color == ColorUtil.WHITE ? -1 : 1;
-
-        // Pawns can attack diagonally
         if (validTile(row + direction, col - 1)) {
             attacks.add(LocAt.at(row + direction, col - 1));
         }

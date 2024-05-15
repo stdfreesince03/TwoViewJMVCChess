@@ -73,9 +73,10 @@ public class GameView  extends GridPane {
     }
 
     public void update(Move move,GameBoard gameBoard){
-        System.out.println("Executed");
         Tile dest = gameBoard.getTile(move.getTo().row(),move.getTo().col());
+        Tile src = gameBoard.getTile(move.getFrom().row(),move.getFrom().col());
         tileViews[move.getTo().row()][move.getTo().col()].setImage(dest.getPiece().getImage());
+        tileViews[move.getFrom().row()][move.getFrom().col()].setImage(null);
     }
 
     public TileView getTileView(int row, int col) {

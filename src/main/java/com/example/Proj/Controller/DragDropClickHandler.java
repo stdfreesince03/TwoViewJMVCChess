@@ -110,7 +110,7 @@ public class DragDropClickHandler {
             boolean success = false;
             if(src != tv){
                 if( GameRules.validMove(srcTile,destTile)){
-                    GameController.getInstance().controllerUpdate(movement);
+                    GameController.getInstance().handleMovement(movement);
                     success = true;
                 }
             }
@@ -130,111 +130,6 @@ public class DragDropClickHandler {
         };
 
     }
-
-
-//
-//    Consumer<Tile> onDragDropped = t->{
-//
-//        EventHandler<DragEvent> onDragDropped = e->{
-//            boolean success = false;
-//            Tile source = (Tile) e.getGestureSource();
-//
-//            if(source != t ){
-//                this.gb.drawPathOntoBoard(source.getTilePiece().getAllPath(source.getTileRowPos(),source.getTileColPos(),gb) );
-//                if(!source.samePieceColor(t)  &&
-//                        source.getTilePiece().isValidPath(t.getTileRowPos(),t.getTileColPos(),gb)) {
-//
-//                    t.setPiece((source.getTilePiece()));
-//                    source.setPiece(null);
-//
-//                    King x = t.getTilePiece().getPieceType().getColor() ==
-//                            ColorUtil.BLACK ? (King)this.gb.getBlackPieces().get("K") :(King) this.gb.getWhitePieces().get("K");
-//                    int colMovement = t.getTileColPos() - source.getTileColPos();
-//
-//                    if(x.isChecked(x.getPieceRow(),x.getPieceCol(),gb)){
-//                        source.setPiece(t.getTilePiece());
-//                        t.setPiece(null);
-//                        source.setImage();
-//                        System.out.println("King is checked");
-//                    }
-//                    else if(x == t.getTilePiece() && !x.hasMoved() && (colMovement == 2 || colMovement == -2 )){
-//                        Rook r = null;
-////
-//                        if( (r = x.castle(gb,colMovement,false)) != null ) {
-//                            int rookRow, rookCol = -1;
-//                            Tile rookTarget = null, rookSource = null;
-//
-//                            if (colMovement == 2) {
-//                                rookTarget = gb.getTiles()[x.getPieceRow()][x.getPieceCol() - 1];
-//                            } else {
-//                                rookTarget = gb.getTiles()[x.getPieceRow()][x.getPieceCol() + 1];
-//                            }
-//
-//                            rookRow = r.getPieceRow();
-//                            rookCol = r.getPieceCol();
-//                            rookSource = gb.getTiles()[rookRow][rookCol];
-//
-//
-//                            assert rookTarget != null;
-//                            rookTarget.setPiece(r);
-//                            rookSource.setPiece(null);
-//                            rookTarget.setImage();
-//                            rookSource.setImage();
-//
-//                            t.setImage();
-//                            success = true;
-//
-//                        } else{
-//                            source.setPiece(t.getTilePiece());
-//                            t.setPiece(null);
-//                            source.setImage();
-//                        }
-//                    }
-//                    else{
-//                        t.setImage();
-//                        success = true;
-//
-//                    }
-//
-//                    if(t.getTilePiece() instanceof  King && !((King) t.getTilePiece()).hasMoved() ){
-//                        ((King)(t.getTilePiece())).moved();
-//                    }
-//                    else if(t.getTilePiece() instanceof Pawn){
-//                        ((Pawn) t.getTilePiece()).setTwoStep(true);
-//                    } else if(t.getTilePiece() instanceof Rook && !((Rook) t.getTilePiece()).hasMoved() ){
-//                        ((Rook)(t.getTilePiece())).moved();
-//                    }
-//
-//                    gb.allOff();
-//
-//                }
-//
-//            }
-//            if(success) gb.playerTurn();
-//            e.setDropCompleted(success);
-//
-//            e.consume();
-//        };
-//        t.setOnDragDropped(onDragDropped);
-//
-//    };
-//
-//    Consumer<Tile> onDragDone = t ->{
-//
-//        EventHandler<DragEvent> onDragDone = e->{
-//            if (e.getTransferMode() == TransferMode.MOVE) {
-////                System.out.println("YES");
-//                t.setPiece(null);
-//            }
-//            else {
-//                t.setPiece(t.getTilePiece());
-//            }
-//            t.setImage();
-//
-//        };
-//
-//        t.setOnDragDone(onDragDone);
-//    };
 
 
 }

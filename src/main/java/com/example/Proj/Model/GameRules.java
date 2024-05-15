@@ -2,6 +2,7 @@ package com.example.Proj.Model;
 
 import com.example.Proj.Pieces.*;
 import com.example.Proj.Util.ColorUtil;
+import com.example.Proj.Util.LocAt;
 import com.example.Proj.Util.LocAt.*;
 
 import java.util.List;
@@ -139,5 +140,9 @@ public class GameRules {
             return false;
         }
         return !tgt.hasPiece() && src.inPiecePath(tgt,gameBoard);
+   }
+
+   public static boolean validTile(int i , int j){
+        return i>=0 && j>=0 && i<8 && j<8;
    }
 }

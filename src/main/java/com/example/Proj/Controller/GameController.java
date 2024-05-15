@@ -3,6 +3,11 @@ package com.example.Proj.Controller;
 import com.example.Proj.Model.GameBoard;
 import com.example.Proj.Model.Move;
 import com.example.Proj.Model.Tile;
+import com.example.Proj.Pieces.King;
+import com.example.Proj.Pieces.Pawn;
+import com.example.Proj.Pieces.Piece;
+import com.example.Proj.Pieces.Rook;
+import com.example.Proj.Util.LocAt;
 import com.example.Proj.View.GameView;
 import com.example.Proj.View.TileView;
 import javafx.scene.input.MouseEvent;
@@ -31,7 +36,34 @@ public class GameController {
         }
     }
 
-    public void controllerUpdate(Move movement) {
+    public void handleMovement(Move movement) {
+        Piece piece = movement.getPiece();
+        LocAt.Location src = movement.getFrom();
+        LocAt.Location dest = movement.getTo();
+
+        if (piece instanceof Pawn && !((Pawn) piece).hasTwoStepped()) {
+            ((Pawn) piece).twoStep();
+        }
+        if (piece instanceof King) {
+            if (!((King) piece).hasMoved()) {
+                if(dest.col() - src.col() == 2){
+                    Rook right = (Rook) gameBoard.getTile(src.row(),7).getPiece();
+                    Move rookMove = new Move(LocAt.at(src.row(),7), LocAt.at(src.row(),dest.col()-1), right);
+                    this.gameBoard.addMove(rookMove);
+                    this.gameView.update(rookMove,gameBoard);
+                    System.out.println(gameBoard.getPieceLocation(right));
+                }else if(dest.col() -src.col() == -2){
+                    Rook right = (Rook) gameBoard.getTile(src.row(),0).getPiece();
+                    Move rookMove = new Move(LocAt.at(src.row(),0), LocAt.at(src.row(),dest.col()+1), right);
+                    this.gameBoard.addMove(rookMove);
+                    this.gameView.update(rookMove,gameBoard);
+                }
+                ((King) piece).setHasMoved();
+            }
+        }
+        if (piece instanceof Rook) {
+            ((Rook) piece).setHasMoved();
+        }
 
         this.gameBoard.addMove(movement);
         this.gameView.update(movement,gameBoard);

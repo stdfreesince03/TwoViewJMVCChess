@@ -25,27 +25,15 @@ public class GameBoard {
         }
     }
 
-    public void addMove(Move move) {
-        moveLog.add(move);
+    public void addMove(Move movement) {
 
-        LocAt.Location src = move.getFrom();
-        LocAt.Location dest = move.getTo();
-        Piece piece = move.getPiece();
+        LocAt.Location src = movement.getFrom();
+        LocAt.Location dest = movement.getTo();
+        Piece piece = movement.getPiece();
 
         tiles[dest.row()][dest.col()].setPiece(piece);
         tiles[src.row()][src.col()].setPiece(null);
 
-        if (piece instanceof Pawn && !((Pawn) piece).hasTwoStepped()) {
-            ((Pawn) piece).twoStep();
-        }
-        if (piece instanceof King) {
-            if (!((King) piece).hasMoved()) {
-                ((King) piece).setHasMoved();
-            }
-        }
-        if (piece instanceof Rook && !((Rook) piece).hasMoved()) {
-            ((Rook) piece).setHasMoved();
-        }
     }
 
     private void pieceInit() {
