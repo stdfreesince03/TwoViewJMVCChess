@@ -3,9 +3,11 @@ module com.example.test {
     requires javafx.fxml;
 
     requires org.controlsfx.controls;
+    requires java.desktop;
+    requires jdk.unsupported.desktop;
 
-    opens com.example.test to javafx.fxml;
+    opens com.example.Proj to javafx.fxml;
 
     exports com.example.trials;
-    exports com.example.test;
+    exports com.example.Proj;
 }
