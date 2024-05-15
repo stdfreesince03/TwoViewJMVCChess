@@ -1,6 +1,7 @@
 package com.example.Proj.Pieces;
 
 import com.example.Proj.Model.GameBoard;
+import com.example.Proj.Model.GameRules;
 import com.example.Proj.Util.ColorUtil;
 import com.example.Proj.Util.LocAt;
 import javafx.scene.image.Image;
@@ -16,6 +17,8 @@ public class Queen extends Piece{
     public List<LocAt.Location> getPossibleMoves(int row, int col , GameBoard gb) {
         List<LocAt.Location> ret = MovementHelper.diagonal(row,col,this,gb);
         ret.addAll(MovementHelper.straight(row,col,this,gb));
+        ret = ret.stream().filter(location -> !GameRules.kingEndangered(LocAt.at(row,col),
+                location,gb)).toList();
         return (ret);
     }
 }

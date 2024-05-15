@@ -2,12 +2,9 @@ package com.example.Proj.Model;
 
 import com.example.Proj.Pieces.*;
 import com.example.Proj.Util.ColorUtil;
-import com.example.Proj.Util.LocAt;
 import com.example.Proj.Util.LocAt.*;
 
-import java.awt.*;
 import java.util.List;
-import java.util.Map;
 
 public class GameRules {
     private static GameBoard gameBoard;
@@ -45,20 +42,7 @@ public class GameRules {
     public static boolean isKingInCheck(ColorUtil color) {
         // Get the king of the specified color
         King king = (color==ColorUtil.BLACK) ? gameBoard.getBlackKing() : gameBoard.getWhiteKing();;
-        Location loc = gameBoard.getKingLocation(king);
-        if(loc == null){
-            System.out.println("-----------------------------------------------------------------");
-            for(int i = 0;i<8;i++){
-                for(int j = 0;j<8;j++){
-                    Tile t = gameBoard.getTile(i,j);
-                    if(t.hasPiece()){
-                        System.out.println("( " + t.getLocation().row() + ", " + t.getLocation().col() + ")," +
-                                t.getPiece().getClass().getSimpleName() +  " " + t.getPiece().getColor()) ;
-                    }
-                }
-            }
-            System.out.println("-----------------------------------------------------------------");
-        }
+        Location loc = gameBoard.getPieceLocation(king);
 
         int row = loc.row();
         int col = loc.col();

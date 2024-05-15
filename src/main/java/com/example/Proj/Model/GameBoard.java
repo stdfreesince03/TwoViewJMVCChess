@@ -34,17 +34,6 @@ public class GameBoard {
 
         tiles[dest.row()][dest.col()].setPiece(piece);
         tiles[src.row()][src.col()].setPiece(null);
-        System.out.println("------------------------- gameboard ------------------------------------");
-        for(int i = 0;i<8;i++){
-            for(int j = 0;j<8;j++){
-                Tile t = getTile(i,j);
-                if(t.hasPiece()){
-                    System.out.println("( " + t.getLocation().row() + ", " + t.getLocation().col() + ")," +
-                            t.getPiece().getClass().getSimpleName() +  " " + t.getPiece().getColor()) ;
-                }
-            }
-        }
-        System.out.println("------------------------- gameboard ------------------------------------");
 
         if (piece instanceof Pawn && !((Pawn) piece).hasTwoStepped()) {
             ((Pawn) piece).twoStep();
@@ -102,7 +91,7 @@ public class GameBoard {
     }
 
 
-    public LocAt.Location getKingLocation(Piece p ) {
+    public LocAt.Location getPieceLocation(Piece p ) {
         for(int i = 0;i<8;i++){
             for(int j = 0;j<8;j++){
                Tile tile = tiles[i][j];
