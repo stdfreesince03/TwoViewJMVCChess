@@ -1,6 +1,7 @@
 package com.example.Proj.Pieces;
 
 import com.example.Proj.Model.GameBoard;
+import com.example.Proj.Model.GameRules;
 import com.example.Proj.Util.ColorUtil;
 import com.example.Proj.Util.LocAt;
 import com.example.Proj.Util.LocAt.*;
@@ -98,13 +99,17 @@ public class MovementHelper {
 
         if(validTile(i,j) ){
             if(p instanceof  King){
-                if(gb.getTile(i,j).hasPiece() && gb.getTile(i,j).getPiece().getColor() != p.getColor()){
+                if(gb.getTile(i,j).hasPiece() && gb.getTile(i,j).getPiece().getColor() != p.color){
                     ret.add(new Location(i,j));
                 }
                 if(!gb.getTile(i,j).hasPiece())ret.add(new Location(i,j));
             }else if (p instanceof  Pawn){
                 if(colInc == 0 ){
-                    if(!gb.getTile(i,j).hasPiece())ret.add(new Location(i,j));
+                    if(gb.getTile(row,col).hasPiece() && gb.getTile(row,col).getPiece() != p) return;
+                    else{
+                        if(!gb.getTile(i,j).hasPiece())ret.add(new Location(i,j));
+                    }
+
                 }else if (gb.getTile(i,j).hasPiece() && gb.getTile(i,j).getPiece().getColor() != p.getColor()){
                     ret.add(new Location(i,j));
                 }
