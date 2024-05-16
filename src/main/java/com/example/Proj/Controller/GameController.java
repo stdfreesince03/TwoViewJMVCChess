@@ -1,12 +1,14 @@
 package com.example.Proj.Controller;
 
 import com.example.Proj.Model.GameBoard;
+import com.example.Proj.Model.GameRules;
 import com.example.Proj.Model.Move;
 import com.example.Proj.Model.Tile;
 import com.example.Proj.Pieces.King;
 import com.example.Proj.Pieces.Pawn;
 import com.example.Proj.Pieces.Piece;
 import com.example.Proj.Pieces.Rook;
+import com.example.Proj.Util.ColorUtil;
 import com.example.Proj.Util.LocAt;
 import com.example.Proj.View.GameView;
 import com.example.Proj.View.TileView;
@@ -17,6 +19,9 @@ public class GameController {
     private GameView gameView;
     private TileView selectedTileView;
     private static GameController instance;
+    private ColorUtil currentPlayer = ColorUtil.WHITE;
+    private ColorUtil winner;
+    private boolean stalemate = false;
 
     private GameController(GameBoard gameBoard, GameView gameView) {
         this.gameBoard = gameBoard;
@@ -24,7 +29,6 @@ public class GameController {
         for(int i=0;i<8;i++){
             for(int j=0;j<8;j++){
                 TileView tileView = gameView.getTileView(i, j);
-                tileView.setOnMouseClicked(event -> mouseClicked(event, tileView));
             }
         }
     }
@@ -51,10 +55,9 @@ public class GameController {
                     Move rookMove = new Move(LocAt.at(src.row(),7), LocAt.at(src.row(),dest.col()-1), right);
                     this.gameBoard.addMove(rookMove);
                     this.gameView.update(rookMove,gameBoard);
-                    System.out.println(gameBoard.getPieceLocation(right));
                 }else if(dest.col() -src.col() == -2){
-                    Rook right = (Rook) gameBoard.getTile(src.row(),0).getPiece();
-                    Move rookMove = new Move(LocAt.at(src.row(),0), LocAt.at(src.row(),dest.col()+1), right);
+                    Rook left= (Rook) gameBoard.getTile(src.row(),0).getPiece();
+                    Move rookMove = new Move(LocAt.at(src.row(),0), LocAt.at(src.row(),dest.col()+1), left);
                     this.gameBoard.addMove(rookMove);
                     this.gameView.update(rookMove,gameBoard);
                 }
@@ -69,6 +72,14 @@ public class GameController {
         this.gameView.update(movement,gameBoard);
         this.gameView.allOff();
 
+        DragDropClickHandler.enableColor(movement.getPiece().getColor() == ColorUtil.BLACK ?
+                ColorUtil.WHITE : ColorUtil.BLACK);
+
+        if(GameRules.stalemate(movement)){
+            this.stalemate = true;
+            return;
+        }
+        this.winner = GameRules.checkMate(movement);
     }
 
     public static GameController getInstance() {
@@ -77,21 +88,6 @@ public class GameController {
 
     public TileView getSelectedTileView() {
         return selectedTileView;
-    }
-
-    private void mouseClicked(MouseEvent event, TileView t1){
-        if(t1 != this.selectedTileView){
-            System.out.println(gameBoard.getTile(t1.getLoc().row(),t1.getLoc().col()).hasPiece());
-
-            this.selectedTileView = t1;
-            Tile t = gameBoard.getTile(t1.getLoc().row(),t1.getLoc().col());
-            if(t.hasPiece()){
-                gameView.allOff();
-                gameView.path(this.selectedTileView,gameBoard);
-            }else{
-                gameView.allOff();
-            }
-        }
     }
 
 
@@ -105,5 +101,13 @@ public class GameController {
 
     public GameView getGameView() {
         return this.gameView;
+    }
+
+    public boolean isStalemate() {
+        return stalemate;
+    }
+
+    public ColorUtil getWinner() {
+        return winner;
     }
 }

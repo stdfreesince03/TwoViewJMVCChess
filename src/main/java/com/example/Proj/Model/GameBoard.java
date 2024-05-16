@@ -27,6 +27,8 @@ public class GameBoard {
 
     public void addMove(Move movement) {
 
+        moveLog.add(movement);
+
         LocAt.Location src = movement.getFrom();
         LocAt.Location dest = movement.getTo();
         Piece piece = movement.getPiece();

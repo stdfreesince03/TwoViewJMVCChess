@@ -10,6 +10,8 @@ import com.example.Proj.View.TileView;
 import javafx.event.EventHandler;
 import javafx.scene.input.*;
 
+import java.awt.*;
+
 public class DragDropClickHandler {
     private static GameBoard gameBoard ;
 
@@ -21,20 +23,55 @@ public class DragDropClickHandler {
                 enable(tileView);
             }
         }
+        enableColor(ColorUtil.WHITE);
 
     }
 
-    public static void enable(TileView tileView){
+
+//
+    public static void enableColor(ColorUtil color){
+        GameController gc = GameController.getInstance();
+        for (int i = 0; i < GameView.ROW_SIZE; i++) {
+            for (int j = 0; j < GameView.COL_SIZE; j++) {
+                Tile t = gameBoard.getTile(i, j);
+                TileView tv = gc.getGameView().getTileView(i,j);
+                if(t.hasPiece() && t.getPiece().getColor() == color){
+                    enable(tv);
+                }else{
+                    disable(tv);
+                }
+            }
+        }
+    }
+
+    private static void mouseClicked(MouseEvent event, TileView t1){
+        if(t1 != GameController.getInstance().getSelectedTileView()){
+            GameController gc = GameController.getInstance();
+            gc.setSelectedTileView(t1);
+            Tile t = gameBoard.getTile(t1.getLoc().row(),t1.getLoc().col());
+            if(t.hasPiece()){
+                gc.getGameView().allOff();
+                gc.getGameView().path(gc.getSelectedTileView(),gameBoard);
+            }else{
+                gc.getGameView().allOff();
+            }
+        }
+    }
+
+    private static void enable(TileView tileView){
+        tileView.setOnDragDropped(OnDragDropped(tileView));
+        tileView.setOnMouseClicked(event -> mouseClicked(event, tileView));
         tileView.setOnDragDetected(OnDragDetected(tileView));
         tileView.setOnDragEntered(OnDragEntered(tileView));
         tileView.setOnDragExited(OnDragExited(tileView));
         tileView.setOnDragOver(OnDragOver(tileView));
-        tileView.setOnDragDropped(OnDragDropped(tileView));
         tileView.setOnDragDone(OnDragDone(tileView));
 
     }
-    public static void disable(TileView tileView){
-
+    private static void disable(TileView tileView){
+        tileView.setOnMouseClicked(null);
+        tileView.setOnDragDetected(null);
+        tileView.setOnDragDone(null);
     }
 
 

@@ -6,6 +6,7 @@ import com.example.Proj.Util.LocAt;
 import com.example.Proj.Util.LocAt.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public class GameRules {
     private static GameBoard gameBoard;
@@ -38,6 +39,67 @@ public class GameRules {
 
 
         return !isSafe;
+    }
+
+    public static boolean stalemate(Move move){
+        King king = move.getPiece().getColor() == ColorUtil.BLACK ? gameBoard.getWhiteKing() : gameBoard.getBlackKing();
+        return  kingHasNoMove(move) && !pieceCanBlock(move, true);
+    }
+
+    public static ColorUtil checkMate(Move move){
+        ColorUtil color = move.getPiece().getColor();
+        if(isKingInCheckAfterMove(move) && kingHasNoMove(move) && !pieceCanBlock(move,false)){
+            return color;
+        }
+        return null;
+    }
+
+    private static boolean kingHasNoMove(Move move){
+        King king = move.getPiece().getColor() == ColorUtil.BLACK ? gameBoard.getWhiteKing() : gameBoard.getBlackKing();
+        Location kingLoc = gameBoard.getPieceLocation(king);
+        return king.getPossibleMoves(kingLoc.row(),kingLoc.col(),gameBoard).isEmpty();
+    }
+
+    private static boolean isKingInCheckAfterMove(Move move){
+        Location to= move.getTo();
+        Piece p = move.getPiece();
+        ColorUtil color = p.getColor();
+        Location kingLoc = gameBoard.getPieceLocation((color == ColorUtil.BLACK) ?
+                gameBoard.getWhiteKing() : gameBoard.getBlackKing());
+        return p.possibleMovesContains(to.row(),to.col(),kingLoc.row(),kingLoc.col(),gameBoard);
+    }
+
+    private static boolean pieceCanBlock(Move move, boolean stalemate){
+        Piece p = move.getPiece();
+        Location to = move.getTo();
+        ColorUtil color = p.getColor();
+        List<Location> toBeBlocked = p.getPossibleMoves(to.row(),to.col(),gameBoard);
+        Location kingLocation = (color == ColorUtil.BLACK) ? gameBoard.getPieceLocation(gameBoard.getWhiteKing()) :
+                gameBoard.getPieceLocation(gameBoard.getBlackKing());
+
+        if(kingLocation != null){
+            if(!toBeBlocked.contains(kingLocation))return true;
+            toBeBlocked.remove(kingLocation);
+        }
+
+        for(int i = 0;i<8;i++){
+            for(int j = 0;j<8;j++){
+                Tile t = gameBoard.getTile(i,j);
+                if(color != t.getPiece().getColor()){
+                    if(stalemate && !t.getPiece().getPossibleMoves(i, j, gameBoard).isEmpty()){
+                        return true;
+                    }else if(!stalemate && kingLocation != null){
+                        List<Location> tMoves = t.getPiece().getPossibleMoves(i,j,gameBoard);
+                        tMoves.retainAll(toBeBlocked);
+                        if(!tMoves.isEmpty()){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     public static boolean isKingInCheck(ColorUtil color) {
