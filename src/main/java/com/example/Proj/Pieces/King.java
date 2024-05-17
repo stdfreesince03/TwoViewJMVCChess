@@ -26,18 +26,21 @@ public class King extends Piece  {
         if(!this.hasMoved){
             Piece xRight =  gb.getTile(row,col+3).getPiece();
             Piece xLeft = gb.getTile(row,col-4).getPiece();
-
+            //for castling path
             if(xRight instanceof Rook && !((Rook) xRight) .hasMoved()){
-                if(!GameRules.kingEndangered(LocAt.at(row,col),LocAt.at(row,col+1),gb)){
+                if(!GameRules.kingEndangered(LocAt.at(row,col),LocAt.at(row,col+1),gb) &&
+                        !gb.getTile(row,col+1).hasPiece()){
                     moves.add(LocAt.at(row,col+2));
                 }
             }
 
             if(xLeft instanceof Rook && !((Rook) xLeft).hasMoved()){
-                if(!GameRules.kingEndangered(LocAt.at(row,col),LocAt.at(row,col-1),gb)){
+                if(!GameRules.kingEndangered(LocAt.at(row,col),LocAt.at(row,col-1),gb) &&
+                        !gb.getTile(row,col-1).hasPiece()){
                     moves.add(LocAt.at(row,col-2));
                 }
             }
+            //for castling path
         }
        return  moves.stream().filter(l -> {
             try{

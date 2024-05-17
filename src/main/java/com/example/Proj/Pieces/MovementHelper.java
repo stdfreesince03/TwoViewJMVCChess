@@ -46,6 +46,7 @@ public class MovementHelper {
         if(!p.hasTwoStepped()){
             oneDirectionSingle(ret,row + step,col,step,0,p,gb);
         }
+        //for entpassant path
         if(validTile(row,col+1) && gb.getTile(row,col+1).hasPiece()){
             if(  gb.getTile(row,col+1).getPiece() instanceof Pawn){
                 Pawn nextDoor = (Pawn) gb.getTile(row,col+1).getPiece();
@@ -66,6 +67,7 @@ public class MovementHelper {
             }
 
         }
+        //for entpassant path
         oneDirectionSingle(ret,row ,col ,step,-1,p,gb);
         oneDirectionSingle(ret,row ,col ,step,1,p,gb);
         return ret;

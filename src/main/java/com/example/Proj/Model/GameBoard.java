@@ -38,8 +38,17 @@ public class GameBoard {
 
     }
 
-    private void pieceInit() {
-        // Initialize black pieces
+    public void pieceRestart(){
+        for(Tile[] tile : tiles){
+            for(Tile t : tile){
+                t.setPiece(null);
+            }
+        }
+    }
+
+    public void pieceInit() {
+        pieceRestart();
+
         blackKing = new King(ColorUtil.BLACK);
         tiles[0][0].setPiece(new Rook(ColorUtil.BLACK));
         tiles[0][1].setPiece(new Knight(ColorUtil.BLACK));

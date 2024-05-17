@@ -4,7 +4,9 @@ import com.example.Proj.Pieces.*;
 import com.example.Proj.Util.ColorUtil;
 import com.example.Proj.Util.LocAt;
 import com.example.Proj.Util.LocAt.*;
+import jdk.swing.interop.SwingInterOpUtils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +21,7 @@ public class GameRules {
        return  src.inPiecePath(tgt,gameBoard)  && !kingEndangered(src.getLocation(),tgt.getLocation(),gameBoard);
     }
 
+    //used for all concerning check : checkmate , open position , king path that is not possible / guarded
     public static boolean kingEndangered(Location curr, Location next, GameBoard gameBoard) {
         Piece srcPiece = gameBoard.getTile(curr.row(), curr.col()).getPiece();
         Piece destPiece = gameBoard.getTile(next.row(), next.col()).getPiece();
@@ -48,16 +51,26 @@ public class GameRules {
 
     public static ColorUtil checkMate(Move move){
         ColorUtil color = move.getPiece().getColor();
-        if(isKingInCheckAfterMove(move) && kingHasNoMove(move) && !pieceCanBlock(move,false)){
-            return color;
+        System.out.println(isKingInCheckAfterMove(move));
+        System.out.println(kingHasNoMove(move));
+        if(!isKingInCheckAfterMove(move)){
+            return null;
         }
-        return null;
+        if(!kingHasNoMove(move)) {
+            return null;
+        }
+        if(pieceCanBlock(move,false)) {
+            return null;
+        }
+        return color;
     }
 
+    //Because a check is certain (code above after isKingInCheckAfterMove), check if a king has an escape or not
     private static boolean kingHasNoMove(Move move){
         King king = move.getPiece().getColor() == ColorUtil.BLACK ? gameBoard.getWhiteKing() : gameBoard.getBlackKing();
         Location kingLoc = gameBoard.getPieceLocation(king);
-        return king.getPossibleMoves(kingLoc.row(),kingLoc.col(),gameBoard).isEmpty();
+        List<Location> check = king.getPossibleMoves(kingLoc.row(),kingLoc.col(),gameBoard);
+        return check.isEmpty();
     }
 
     private static boolean isKingInCheckAfterMove(Move move){
@@ -69,36 +82,42 @@ public class GameRules {
         return p.possibleMovesContains(to.row(),to.col(),kingLoc.row(),kingLoc.col(),gameBoard);
     }
 
+    //used to check stalemate and checkmate as well, stalemate=true check stalemate otherwise check if checkmate can be blocked/negated
     private static boolean pieceCanBlock(Move move, boolean stalemate){
         Piece p = move.getPiece();
         Location to = move.getTo();
         ColorUtil color = p.getColor();
-        List<Location> toBeBlocked = p.getPossibleMoves(to.row(),to.col(),gameBoard);
         Location kingLocation = (color == ColorUtil.BLACK) ? gameBoard.getPieceLocation(gameBoard.getWhiteKing()) :
                 gameBoard.getPieceLocation(gameBoard.getBlackKing());
+        if(stalemate){
+            for(int i = 0;i<8;i++){
+                for(int j = 0;j<8;j++){
+                    Tile t = gameBoard.getTile(i,j);
+                    if(t.hasPiece() && t.getPiece().getColor() != p.getColor()){
+                        if(!t.getPiece().getPossibleMoves(i, j, gameBoard).isEmpty()) return true;
+                    }
+                }
+            }
 
-        if(kingLocation != null){
-            if(!toBeBlocked.contains(kingLocation))return true;
-            toBeBlocked.remove(kingLocation);
-        }
-
-        for(int i = 0;i<8;i++){
-            for(int j = 0;j<8;j++){
-                Tile t = gameBoard.getTile(i,j);
-                if(color != t.getPiece().getColor()){
-                    if(stalemate && !t.getPiece().getPossibleMoves(i, j, gameBoard).isEmpty()){
-                        return true;
-                    }else if(!stalemate && kingLocation != null){
-                        List<Location> tMoves = t.getPiece().getPossibleMoves(i,j,gameBoard);
-                        tMoves.retainAll(toBeBlocked);
-                        if(!tMoves.isEmpty()){
-                            return true;
+        }else{
+            if(kingLocation != null){
+                for(int i = 0;i<8;i++){
+                    for(int j = 0;j<8;j++){
+                        System.out.println("loop " + i + " " + j);
+                        Tile t = gameBoard.getTile(i,j);
+                        if(t.hasPiece() && t.getPiece().getColor() != p.getColor()){
+                            List<Location> tMoves = t.getPiece().getPossibleMoves(i,j,gameBoard);
+                            for(Location m : tMoves){
+                                if(!kingEndangered(LocAt.at(i,j),m,gameBoard)){
+                                    return true;
+                                }
+                            }
                         }
+
                     }
                 }
             }
         }
-
         return false;
     }
 
@@ -127,6 +146,8 @@ public class GameRules {
 
         return false;
     }
+
+    //below until end are threats check and helper functions
 
     private static boolean checkStraightThreats(Piece king, int row, int col) {
         List<Location> straightThreats = MovementHelper.straight(row, col, king,gameBoard);
@@ -204,7 +225,4 @@ public class GameRules {
         return !tgt.hasPiece() && src.inPiecePath(tgt,gameBoard);
    }
 
-   public static boolean validTile(int i , int j){
-        return i>=0 && j>=0 && i<8 && j<8;
-   }
 }

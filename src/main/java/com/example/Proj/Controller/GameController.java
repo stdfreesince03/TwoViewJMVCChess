@@ -13,13 +13,13 @@ import com.example.Proj.Util.LocAt;
 import com.example.Proj.View.GameView;
 import com.example.Proj.View.TileView;
 import javafx.scene.input.MouseEvent;
+import jdk.swing.interop.SwingInterOpUtils;
 
 public class GameController {
     private GameBoard gameBoard;
     private GameView gameView;
     private TileView selectedTileView;
     private static GameController instance;
-    private ColorUtil currentPlayer = ColorUtil.WHITE;
     private ColorUtil winner;
     private boolean stalemate = false;
 
@@ -32,6 +32,8 @@ public class GameController {
             }
         }
     }
+
+
 
     public static void initialize(GameBoard gameBoard, GameView gameView) {
         if (instance == null) {
@@ -54,6 +56,7 @@ public class GameController {
             }
         }
         if (piece instanceof King) {
+            //for castling
             if (!((King) piece).hasMoved()) {
                 if(dest.col() - src.col() == 2){
                     Rook right = (Rook) gameBoard.getTile(src.row(),7).getPiece();
@@ -68,11 +71,13 @@ public class GameController {
                 }
                 ((King) piece).setHasMoved();
             }
+            //for castling
         }
         if (piece instanceof Rook) {
             ((Rook) piece).setHasMoved();
         }
 
+        //for ent passant
         if(piece instanceof Pawn && Math.abs(dest.col() - src.col()) == 1 &&
                 !gameBoard.getTile(dest.row(), dest.col()).hasPiece() ) {
                 int rowInc = piece.getColor() == ColorUtil.WHITE ? -1 : 1;
@@ -82,7 +87,7 @@ public class GameController {
                 this.gameBoard.getTile(dest.row() - rowInc, dest.col()).setPiece(null);
                 this.gameView.getTileView(dest.row() - rowInc, dest.col()).setImage(null);
                 this.gameView.allOff();
-
+        //for ent passant
         }else{
             this.gameBoard.addMove(movement);
             this.gameView.update(movement,gameBoard);
@@ -93,11 +98,13 @@ public class GameController {
         DragDropClickHandler.enableColor(movement.getPiece().getColor() == ColorUtil.BLACK ?
                 ColorUtil.WHITE : ColorUtil.BLACK);
 
-        if(GameRules.stalemate(movement)){
-            this.stalemate = true;
+        if((this.winner = GameRules.checkMate(movement)) != null ){
             return;
         }
-        this.winner = GameRules.checkMate(movement);
+        if(GameRules.stalemate(movement)){
+            this.stalemate = true;
+        }
+
     }
 
     public static GameController getInstance() {
@@ -114,7 +121,10 @@ public class GameController {
         this.selectedTileView = selectedTileView;
         this.gameView.path(this.selectedTileView,gameBoard);
 
+    }
 
+    public GameBoard getGameBoard() {
+        return gameBoard;
     }
 
     public GameView getGameView() {

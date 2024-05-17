@@ -39,6 +39,7 @@ public class GameView  extends GridPane {
         }
 
     }
+    //draw path based on selected piece
     public void path(TileView tv,GameBoard gameBoard){
         Tile curr = gameBoard.getTile(tv.getLoc().row(),tv.getLoc().col());
         if(curr.hasPiece()){
@@ -46,9 +47,19 @@ public class GameView  extends GridPane {
                     ,gameBoard),tv,gameBoard);
         }
     }
+    //draw path based on selected piece
 
 
+    public void restartUpdate(GameBoard gameBoard){
+        for(TileView[] tv : tileViews){
+            for(TileView tv1 : tv){
+                Tile t = gameBoard.getTile(tv1.getLoc().row(),tv1.getLoc().col());
+                if(t.hasPiece())tv1.setImage(t.getPiece().getImage());
+                else tv1.setImage(null);
 
+            }
+        }
+    }
     private void drawPathOntoBoard(List<Location> paths,TileView current,GameBoard gameBoard) {
         Tile curr = gameBoard.getTile(current.getLoc().row(),current.getLoc().col());
         for (Location l : paths) {

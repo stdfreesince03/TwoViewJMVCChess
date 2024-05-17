@@ -16,6 +16,7 @@ public class Tile {
         this.piece = piece;
     }
 
+    //check if a piece on a tile has a dest in it's path
     public boolean inPiecePath(Tile dest,GameBoard gameBoard){
         if(this.piece != null){
             return this.piece.possibleMovesContains(this.getLocation().row(), this.getLocation().col()
