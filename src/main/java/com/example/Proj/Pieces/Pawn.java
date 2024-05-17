@@ -11,10 +11,12 @@ import java.util.List;
 
 public class Pawn extends Piece  {
     private boolean hasTwoStepped ;
+    private boolean entPassantProne;
 
     public Pawn(ColorUtil color) {
         super( color);
         this.hasTwoStepped = false;
+        this.entPassantProne = false;
     }
 
     @Override
@@ -31,6 +33,11 @@ public class Pawn extends Piece  {
         return this.hasTwoStepped;
     }
 
+    public boolean isEntPassantProne() {
+        return entPassantProne;
+    }
 
-
+    public void setEntPassantProne(boolean entPassantProne) {
+        this.entPassantProne = entPassantProne;
+    }
 }

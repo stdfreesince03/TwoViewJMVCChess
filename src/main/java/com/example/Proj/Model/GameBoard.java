@@ -4,11 +4,12 @@ import com.example.Proj.Pieces.*;
 import com.example.Proj.Util.ColorUtil;
 import com.example.Proj.Util.LocAt;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GameBoard {
     private Tile[][] tiles = new Tile[8][8];
-    private List<Move> moveLog = new ArrayList<>();
+    private LinkedList<Move> moveLog = new LinkedList<>();
     private King whiteKing;
     private King blackKing;
 
@@ -32,7 +33,6 @@ public class GameBoard {
         LocAt.Location src = movement.getFrom();
         LocAt.Location dest = movement.getTo();
         Piece piece = movement.getPiece();
-
         tiles[dest.row()][dest.col()].setPiece(piece);
         tiles[src.row()][src.col()].setPiece(null);
 
@@ -80,6 +80,9 @@ public class GameBoard {
         return blackKing;
     }
 
+    public LinkedList<Move> getMoveLog() {
+        return moveLog;
+    }
 
     public LocAt.Location getPieceLocation(Piece p ) {
         for(int i = 0;i<8;i++){

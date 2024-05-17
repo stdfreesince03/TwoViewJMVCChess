@@ -45,8 +45,13 @@ public class GameController {
         LocAt.Location src = movement.getFrom();
         LocAt.Location dest = movement.getTo();
 
-        if (piece instanceof Pawn && !((Pawn) piece).hasTwoStepped()) {
-            ((Pawn) piece).twoStep();
+        if (piece instanceof Pawn  ) {
+            if(!((Pawn) piece).hasTwoStepped()) ((Pawn) piece).twoStep();
+            if(src.col() == dest.col() && Math.abs(src.row() - dest.row()) == 2){
+                ((Pawn)piece).setEntPassantProne(true);
+            }else if(((Pawn) piece).isEntPassantProne()){
+                ((Pawn)piece).setEntPassantProne(false);
+            }
         }
         if (piece instanceof King) {
             if (!((King) piece).hasMoved()) {
@@ -68,9 +73,22 @@ public class GameController {
             ((Rook) piece).setHasMoved();
         }
 
-        this.gameBoard.addMove(movement);
-        this.gameView.update(movement,gameBoard);
-        this.gameView.allOff();
+        if(piece instanceof Pawn && Math.abs(dest.col() - src.col()) == 1 &&
+                !gameBoard.getTile(dest.row(), dest.col()).hasPiece() ) {
+                int rowInc = piece.getColor() == ColorUtil.WHITE ? -1 : 1;
+                Move move1 = new Move(src, dest, piece);
+                this.gameBoard.addMove(move1);
+                this.gameView.update(move1, gameBoard);
+                this.gameBoard.getTile(dest.row() - rowInc, dest.col()).setPiece(null);
+                this.gameView.getTileView(dest.row() - rowInc, dest.col()).setImage(null);
+                this.gameView.allOff();
+
+        }else{
+            this.gameBoard.addMove(movement);
+            this.gameView.update(movement,gameBoard);
+            this.gameView.allOff();
+        }
+
 
         DragDropClickHandler.enableColor(movement.getPiece().getColor() == ColorUtil.BLACK ?
                 ColorUtil.WHITE : ColorUtil.BLACK);

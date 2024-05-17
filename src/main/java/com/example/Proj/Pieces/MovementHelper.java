@@ -46,6 +46,26 @@ public class MovementHelper {
         if(!p.hasTwoStepped()){
             oneDirectionSingle(ret,row + step,col,step,0,p,gb);
         }
+        if(validTile(row,col+1) && gb.getTile(row,col+1).hasPiece()){
+            if(  gb.getTile(row,col+1).getPiece() instanceof Pawn){
+                Pawn nextDoor = (Pawn) gb.getTile(row,col+1).getPiece();
+                if(nextDoor.isEntPassantProne() && nextDoor == gb.getMoveLog().getLast().getPiece()){
+                    ret.add(LocAt.at(row + (p.getColor() == ColorUtil.BLACK ? 1 : -1),col+1));
+
+                }
+            }
+
+        }
+        if(validTile(row,col-1) && gb.getTile(row,col-1).hasPiece()){
+            if(  gb.getTile(row,col-1).getPiece() instanceof Pawn){
+                Pawn nextDoor = (Pawn) gb.getTile(row,col-1).getPiece();
+                if(nextDoor.isEntPassantProne() && nextDoor == gb.getMoveLog().getLast().getPiece()){
+                    ret.add(LocAt.at(row + (p.getColor() == ColorUtil.BLACK ? 1 : -1),col-1));
+
+                }
+            }
+
+        }
         oneDirectionSingle(ret,row ,col ,step,-1,p,gb);
         oneDirectionSingle(ret,row ,col ,step,1,p,gb);
         return ret;
