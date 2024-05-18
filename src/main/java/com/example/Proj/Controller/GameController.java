@@ -78,7 +78,7 @@ public class GameController {
                 this.gameView.updateAfterMove(move1, gameBoard);
                 this.gameBoard.getTile(dest.row() - rowInc, dest.col()).setPiece(null);
                 this.gameView.getWhiteView().getTileView(dest.row() - rowInc, dest.col()).setImage(null);
-                this.gameView.getBlackView().getTileView(dest.row() - rowInc, dest.col()).setImage(null);
+                this.gameView.getBlackView().getTileView(7-dest.row() + rowInc, 7-dest.col()).setImage(null);
                 this.gameView.allOff();
         //for ent passant
         }else{
