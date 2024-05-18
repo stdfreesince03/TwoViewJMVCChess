@@ -1,15 +1,18 @@
 package com.example.Proj.Model;
 
 import com.example.Proj.Pieces.Piece;
+import com.example.Proj.Util.ColorUtil;
 import com.example.Proj.Util.LocAt;
 
 public class Tile {
     private Piece piece ;
     private LocAt.Location location ;
+    private ColorUtil tileColor;
 
-    public Tile(int row, int col) {
+    public Tile(int row, int col, ColorUtil tileColor) {
         this.location = LocAt.at(row,col);
         this.piece = null;
+        this.tileColor = tileColor;
     }
 
     public void setPiece(Piece piece) {
@@ -37,7 +40,7 @@ public class Tile {
         return this.location;
     }
 
-
-
-
+    public ColorUtil getTileColor() {
+        return tileColor;
+    }
 }

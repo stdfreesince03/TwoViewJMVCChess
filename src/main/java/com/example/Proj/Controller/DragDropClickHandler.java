@@ -33,8 +33,8 @@ public class DragDropClickHandler {
         GameController gc = GameController.getInstance();
         for (int i = 0; i < GameView.ROW_SIZE; i++) {
             for (int j = 0; j < GameView.COL_SIZE; j++) {
-                Tile t = gameBoard.getTile(i, j);
                 TileView tv = gc.getGameView().getTileView(i,j);
+                Tile t = gameBoard.getTile(tv.getLoc().row(), tv.getLoc().col());
                 if(t.hasPiece() && t.getPiece().getColor() == color){
                     enable(tv);
                 }else{
@@ -148,6 +148,7 @@ public class DragDropClickHandler {
             if(src != tv){
                 if( GameRules.validMove(srcTile,destTile)){
                     GameController.getInstance().handleMovement(movement);
+                    System.out.println(movement.getPiece().getClass().getSimpleName() + movement.getPiece().getColor());
                     success = true;
                 }
             }

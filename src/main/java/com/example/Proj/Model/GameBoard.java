@@ -19,11 +19,17 @@ public class GameBoard {
     }
 
     private void tileInit() {
+        ColorUtil row = ColorUtil.WHITE;
+        ColorUtil col = row;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                tiles[i][j] = new Tile(i, j);
+                tiles[i][j] = new Tile(i, j,col);
+                col = (col == ColorUtil.WHITE) ? ColorUtil.BLACK : ColorUtil.WHITE;
             }
+            row = (row == ColorUtil.WHITE) ? ColorUtil.BLACK : ColorUtil.WHITE;
+            col = row;
         }
+
     }
 
     public void addMove(Move movement) {

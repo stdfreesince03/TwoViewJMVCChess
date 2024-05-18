@@ -3,7 +3,6 @@ package com.example.Proj.Controller;
 import com.example.Proj.Model.GameBoard;
 import com.example.Proj.Model.GameRules;
 import com.example.Proj.Model.Move;
-import com.example.Proj.Model.Tile;
 import com.example.Proj.Pieces.King;
 import com.example.Proj.Pieces.Pawn;
 import com.example.Proj.Pieces.Piece;
@@ -12,8 +11,6 @@ import com.example.Proj.Util.ColorUtil;
 import com.example.Proj.Util.LocAt;
 import com.example.Proj.View.GameView;
 import com.example.Proj.View.TileView;
-import javafx.scene.input.MouseEvent;
-import jdk.swing.interop.SwingInterOpUtils;
 
 public class GameController {
     private GameBoard gameBoard;
@@ -26,14 +23,7 @@ public class GameController {
     private GameController(GameBoard gameBoard, GameView gameView) {
         this.gameBoard = gameBoard;
         this.gameView = gameView;
-        for(int i=0;i<8;i++){
-            for(int j=0;j<8;j++){
-                TileView tileView = gameView.getTileView(i, j);
-            }
-        }
     }
-
-
 
     public static void initialize(GameBoard gameBoard, GameView gameView) {
         if (instance == null) {
@@ -62,12 +52,12 @@ public class GameController {
                     Rook right = (Rook) gameBoard.getTile(src.row(),7).getPiece();
                     Move rookMove = new Move(LocAt.at(src.row(),7), LocAt.at(src.row(),dest.col()-1), right);
                     this.gameBoard.addMove(rookMove);
-                    this.gameView.update(rookMove,gameBoard);
+                    this.gameView.updateAfterMove(rookMove,gameBoard);
                 }else if(dest.col() -src.col() == -2){
                     Rook left= (Rook) gameBoard.getTile(src.row(),0).getPiece();
                     Move rookMove = new Move(LocAt.at(src.row(),0), LocAt.at(src.row(),dest.col()+1), left);
                     this.gameBoard.addMove(rookMove);
-                    this.gameView.update(rookMove,gameBoard);
+                    this.gameView.updateAfterMove(rookMove,gameBoard);
                 }
                 ((King) piece).setHasMoved();
             }
@@ -83,18 +73,18 @@ public class GameController {
                 int rowInc = piece.getColor() == ColorUtil.WHITE ? -1 : 1;
                 Move move1 = new Move(src, dest, piece);
                 this.gameBoard.addMove(move1);
-                this.gameView.update(move1, gameBoard);
+                this.gameView.updateAfterMove(move1, gameBoard);
                 this.gameBoard.getTile(dest.row() - rowInc, dest.col()).setPiece(null);
                 this.gameView.getTileView(dest.row() - rowInc, dest.col()).setImage(null);
                 this.gameView.allOff();
         //for ent passant
         }else{
             this.gameBoard.addMove(movement);
-            this.gameView.update(movement,gameBoard);
+            this.gameView.updateAfterMove(movement,gameBoard);
             this.gameView.allOff();
         }
 
-
+        System.out.println("Movement is : " + movement.getPiece().getColor());
         DragDropClickHandler.enableColor(movement.getPiece().getColor() == ColorUtil.BLACK ?
                 ColorUtil.WHITE : ColorUtil.BLACK);
 

@@ -17,10 +17,12 @@ public class TileView extends Label {
     private final ColorUtil color;
     private ColorUtil highlighted;
     private final LocAt.Location loc;
+    private final Tile tile;
 
-    public TileView( ColorUtil color,int row,int col) {
-        this.color = color;
-        loc = LocAt.at(row,col);
+    public TileView(Tile tile) {
+        this.tile = tile;
+        this.color = this.tile.getTileColor();
+        loc = this.tile.getLocation();
         normalColor();
     }
 

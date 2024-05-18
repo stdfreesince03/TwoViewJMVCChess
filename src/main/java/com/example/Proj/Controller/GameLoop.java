@@ -13,7 +13,7 @@ public class GameLoop {
     private GameController gc;
     public GameLoop() {
         GameBoard board = new GameBoard();
-        GameView view = new GameView(board);
+        GameView view = new GameView(board,false);
         GameRules rules = new GameRules(board);
         GameController.initialize(board,view);
         this.gc = GameController.getInstance();
