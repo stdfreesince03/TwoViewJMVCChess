@@ -1,0 +1,11 @@
+♙(PW): e2->e4 ♟(PB): d7->d6
+♕(QW): d1->f3 ♟(PB): c7->c6
+♗(BiW): f1->c4 ♟(PB): h7->h6
+♕(QW): f3->f7 ♚(KiB): e8->d7
+♗(BiW): c4->e6 ♚(KiB): d7->c7
+♙(PW): d2->d3 ♟(PB): h6->h5
+♗(BiW): c1->e3 ♟(PB): h5->h4
+♙(PW): h2->h3 ♟(PB): a7->a6
+♙(PW): a2->a4 ♜(RB): h8->h7
+♙(PW): a4->a5 ♜(RB): h7->h6
+♗(BiW): e3->b6 
