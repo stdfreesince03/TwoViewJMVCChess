@@ -33,12 +33,21 @@ public class DragDropClickHandler {
         GameController gc = GameController.getInstance();
         for (int i = 0; i < GameView.ROW_SIZE; i++) {
             for (int j = 0; j < GameView.COL_SIZE; j++) {
-                TileView tv = gc.getGameView().getTileView(i,j);
-                Tile t = gameBoard.getTile(tv.getLoc().row(), tv.getLoc().col());
-                if(t.hasPiece() && t.getPiece().getColor() == color){
-                    enable(tv);
+                TileView whitetv = gc.getGameView().getWhiteView().getTileView(i,j);
+                TileView blacktv = gc.getGameView().getBlackView().getTileView(i,j);
+
+                Tile twhite = gameBoard.getTile(whitetv.getLoc().row(), whitetv.getLoc().col());
+                if(twhite.hasPiece() && twhite.getPiece().getColor() == color){
+                    enable(whitetv);
                 }else{
-                    disable(tv);
+                    disable(whitetv);
+                }
+
+                Tile tblack = gameBoard.getTile(blacktv.getLoc().row(), blacktv.getLoc().col());
+                if(tblack.hasPiece() && tblack.getPiece().getColor() == color){
+                    enable(blacktv);
+                }else{
+                    disable(blacktv);
                 }
             }
         }

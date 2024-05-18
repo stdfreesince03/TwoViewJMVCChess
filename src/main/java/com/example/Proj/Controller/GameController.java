@@ -9,26 +9,28 @@ import com.example.Proj.Pieces.Piece;
 import com.example.Proj.Pieces.Rook;
 import com.example.Proj.Util.ColorUtil;
 import com.example.Proj.Util.LocAt;
+import com.example.Proj.View.DoubleGameView;
 import com.example.Proj.View.GameView;
 import com.example.Proj.View.TileView;
 
 public class GameController {
     private GameBoard gameBoard;
-    private GameView gameView;
+    private DoubleGameView gameView;
     private TileView selectedTileView;
     private static GameController instance;
     private ColorUtil winner;
     private boolean stalemate = false;
 
-    private GameController(GameBoard gameBoard, GameView gameView) {
+    private GameController(GameBoard gameBoard, DoubleGameView gameView) {
         this.gameBoard = gameBoard;
         this.gameView = gameView;
     }
 
-    public static void initialize(GameBoard gameBoard, GameView gameView) {
+    public static void initialize(GameBoard gameBoard,DoubleGameView gameView) {
         if (instance == null) {
             instance = new GameController(gameBoard, gameView);
-            DragDropClickHandler.initialize(gameBoard, gameView);
+            DragDropClickHandler.initialize(gameBoard, gameView.getBlackView());
+            DragDropClickHandler.initialize(gameBoard, gameView.getWhiteView());
         }
     }
 
@@ -75,7 +77,8 @@ public class GameController {
                 this.gameBoard.addMove(move1);
                 this.gameView.updateAfterMove(move1, gameBoard);
                 this.gameBoard.getTile(dest.row() - rowInc, dest.col()).setPiece(null);
-                this.gameView.getTileView(dest.row() - rowInc, dest.col()).setImage(null);
+                this.gameView.getWhiteView().getTileView(dest.row() - rowInc, dest.col()).setImage(null);
+                this.gameView.getBlackView().getTileView(dest.row() - rowInc, dest.col()).setImage(null);
                 this.gameView.allOff();
         //for ent passant
         }else{
@@ -117,7 +120,7 @@ public class GameController {
         return gameBoard;
     }
 
-    public GameView getGameView() {
+    public DoubleGameView getGameView() {
         return this.gameView;
     }
 

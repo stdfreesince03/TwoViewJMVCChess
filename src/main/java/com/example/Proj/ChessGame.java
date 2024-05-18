@@ -17,8 +17,7 @@ public class ChessGame extends Application {
     public void start(Stage stage) throws IOException {
         GameLoop gameLoop = new GameLoop();
 
-
-        Scene scene = new Scene(gameLoop.getGameView(), 640, 640);
+        Scene scene = new Scene(gameLoop.getGameView(), 1200, 640);
         stage.setResizable(true);
         stage.setTitle("Chess Game");
         stage.setResizable(false);

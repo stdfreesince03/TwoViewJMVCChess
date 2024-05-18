@@ -3,6 +3,7 @@ package com.example.Proj.Controller;
 import com.example.Proj.Model.GameBoard;
 import com.example.Proj.Model.GameRules;
 import com.example.Proj.Util.ColorUtil;
+import com.example.Proj.View.DoubleGameView;
 import com.example.Proj.View.GameView;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
@@ -13,7 +14,7 @@ public class GameLoop {
     private GameController gc;
     public GameLoop() {
         GameBoard board = new GameBoard();
-        GameView view = new GameView(board,false);
+        DoubleGameView view = new DoubleGameView(board);
         GameRules rules = new GameRules(board);
         GameController.initialize(board,view);
         this.gc = GameController.getInstance();
@@ -71,10 +72,11 @@ public class GameLoop {
     private void restartGame(){
         this.gc.getGameBoard().pieceInit();
         this.gc.getGameView().restartUpdate(this.gc.getGameBoard());
-        DragDropClickHandler.initialize(this.gc.getGameBoard(), this.getGameView());
+        DragDropClickHandler.initialize(this.gc.getGameBoard(),this.getGameView().getWhiteView());
+        DragDropClickHandler.initialize(this.gc.getGameBoard(),this.getGameView().getBlackView());
     }
 
-    public GameView getGameView(){
+    public DoubleGameView getGameView(){
         return this.gc.getGameView();
     }
 }

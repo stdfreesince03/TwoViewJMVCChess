@@ -18,8 +18,8 @@ public class GameView  extends GridPane {
     private final boolean flipped;
 
     public GameView(GameBoard gameBoard,boolean flipped){
-        this.setWidth(640);
-        this.setHeight(640);
+        this.setWidth(640 );
+        this.setHeight(640 );
 
         this.tileViews =  new TileView[8][8];
         this.flipped = flipped;
