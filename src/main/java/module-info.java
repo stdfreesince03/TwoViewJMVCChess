@@ -8,6 +8,5 @@ module com.example.test {
 
     opens com.example.Proj to javafx.fxml;
 
-    exports com.example.trials;
     exports com.example.Proj;
 }

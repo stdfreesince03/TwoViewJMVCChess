@@ -20,13 +20,13 @@ public class DoubleGameView extends HBox {
     public DoubleGameView(GameBoard gameBoard) {
         whiteView = new GameView(gameBoard, false);
         blackView = new GameView(gameBoard, true);
-
-        this.getChildren().addAll(whiteView,createSeparator() ,blackView);
+        Pane pane =createSeparator();
+        this.getChildren().addAll(whiteView,pane ,blackView);
     }
 
     private Pane createSeparator(){
         Pane separator = new Pane();
-        separator.setPrefWidth(2);
+        separator.setPrefWidth(80);
         separator.setStyle("-fx-background-color: darkkhaki;");
         return separator;
     }
