@@ -28,7 +28,7 @@ public class DragDropClickHandler {
     }
 
 
-//
+
     public static void enableColor(ColorUtil color){
         GameController gc = GameController.getInstance();
         for (int i = 0; i < GameView.ROW_SIZE; i++) {

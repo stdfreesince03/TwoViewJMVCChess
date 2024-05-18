@@ -34,7 +34,6 @@ public class GameLoop {
                         break;
                     }
                     if (gc.isStalemate()) {
-                        System.out.println("STALEMATE MAYNE");
                         GameLogger.saveGameMoves(gc.getGameBoard().getMoveLog());
                         updateMessage("It's a draw");
                         break;

@@ -103,7 +103,6 @@ public class GameRules {
             if(kingLocation != null){
                 for(int i = 0;i<8;i++){
                     for(int j = 0;j<8;j++){
-                        System.out.println("loop " + i + " " + j);
                         Tile t = gameBoard.getTile(i,j);
                         if(t.hasPiece() && t.getPiece().getColor() != p.getColor()){
                             List<Location> tMoves = t.getPiece().getPossibleMoves(i,j,gameBoard);

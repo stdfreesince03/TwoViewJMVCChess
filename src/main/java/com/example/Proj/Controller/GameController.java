@@ -87,7 +87,6 @@ public class GameController {
             this.gameView.allOff();
         }
 
-        System.out.println("Movement is : " + movement.getPiece().getColor());
         DragDropClickHandler.enableColor(movement.getPiece().getColor() == ColorUtil.BLACK ?
                 ColorUtil.WHITE : ColorUtil.BLACK);
 
